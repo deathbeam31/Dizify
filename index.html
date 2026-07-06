@@ -643,8 +643,8 @@
 <script>
 /* ================= AYARLAR ================= */
 const API_KEY = '4167c70c2f1823cb24e347d8a88e748b';
-const API = 'https://dizify-api.SENIN-ADRESIN.workers.dev/3';
-const IMG = 'https://dizify-api.SENIN-ADRESIN.workers.dev/t/p';
+const API = 'https://dizify-api.bsbr-oyunda.workers.dev/3';
+const IMG = 'https://dizify-api.bsbr-oyunda.workers.dev/t/p';
 let LANG = 'tr-TR';
 const L = () => LANG.startsWith('tr') ? 'tr' : 'en';
 
@@ -988,7 +988,7 @@ async function openDetail(id, type, autoTrailer = false){
         <p class="overview">${escHTML(data.overview || '') || t('noOverview')}</p>
         ${trailer ? `
           <button class="btn-primary" onclick="playTrailer('${esc(trailer.key)}')">${t('playTrailer')}</button>
-          <iframe class="trailer-frame" id="trailerFrame" allow="autoplay; encrypted-media" allowfullscreen title="${title}"></iframe>
+          <iframe class="trailer-frame" id="trailerFrame" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="${title}"></iframe>
         ` : ''}
         <div class="providers">
           <h3>${t('whereWatch')}</h3>
@@ -1008,7 +1008,7 @@ async function openDetail(id, type, autoTrailer = false){
 function playTrailer(key){
   const frame = document.getElementById('trailerFrame');
   if(!frame) return;
-  frame.src = `https://www.youtube.com/embed/${key}?autoplay=1`;
+  frame.src = `https://www.youtube-nocookie.com/embed/${key}?autoplay=1&rel=0&origin=${encodeURIComponent(location.origin)}`;
   frame.classList.add('show');
   frame.scrollIntoView({behavior:'smooth', block:'center'});
 }
