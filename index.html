@@ -3,33 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dizify — Açılış Animasyonu v6 (Ateş + Çoğalma)</title>
+<title>Dizify — Film & Dizi Keşfi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:      #0D0805;
-    --bg-deep: #070402;
+    --bg:      #120A05;   /* koyu kahve-siyah */
+    --bg-deep: #0A0503;
+    --panel:   #1A0F08;
     --flame:   #FF7A1A;
     --amber:   #FFB33C;
     --ember:   #FF3D1F;
     --hot:     #FFD98F;
     --text:    #FBF8F3;
-    --muted:   #A99A8C;
+    --muted:   #A08D7C;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  html,body{height:100%}
+  html{scroll-behavior:smooth}
   body{
     background:var(--bg-deep);
-    font-family:"Segoe UI",system-ui,-apple-system,sans-serif;
-    overflow:hidden; color:var(--text);
+    font-family:"Outfit","Segoe UI",system-ui,sans-serif;
+    color:var(--text);
+    overflow-x:hidden;
   }
+  body.intro-active{overflow:hidden}
+  button{font-family:inherit}
 
   /* ================= INTRO ================= */
   .intro{
-    position:fixed; inset:0; z-index:50;
+    position:fixed; inset:0; z-index:100;
     display:grid; place-items:center;
     background:var(--bg-deep);
     animation:intro-out .01s linear 4.4s forwards;
   }
+  .intro.skip{display:none}
   @keyframes intro-out{to{opacity:0; visibility:hidden}}
 
   .aurora{position:absolute; inset:0; overflow:hidden; filter:blur(100px); opacity:.45}
@@ -72,7 +79,6 @@
   .stage{position:relative; width:min(92vw,780px); aspect-ratio:19/9}
   .stage svg{position:absolute; inset:0; width:100%; height:100%; overflow:visible}
 
-  /* --- ANA HİLALLER: belirir, enerji toplar, patlamaya karışır --- */
   .crescent{opacity:0}
   .crescent.left{
     transform-origin:194px 180px;
@@ -96,35 +102,27 @@
     from{opacity:0; transform:rotate(120deg) scale(.4)}
     to  {opacity:1; transform:rotate(0deg)   scale(1)}
   }
-  /* enerji toplama: giderek daha parlak, hafif titreşim */
   @keyframes charge{
     0%  {filter:drop-shadow(0 0 16px rgba(255,122,26,.75)) drop-shadow(0 0 52px rgba(255,61,31,.35))}
-    60% {filter:drop-shadow(0 0 24px rgba(255,179,60,.9))  drop-shadow(0 0 70px rgba(255,122,26,.5))}
     100%{filter:drop-shadow(0 0 34px rgba(255,217,143,1))  drop-shadow(0 0 95px rgba(255,122,26,.7))}
   }
-  @keyframes cres-blast{
-    to{opacity:0; scale:1.6; filter:drop-shadow(0 0 60px rgba(255,217,143,1)) blur(6px)}
-  }
+  @keyframes cres-blast{to{opacity:0; scale:1.6}}
 
-  /* --- ÇOĞALAN HİLAL YANKILARI: üst üste büyüyerek yayılır --- */
   .echo{
-    opacity:0;
-    transform-origin:380px 180px;
+    opacity:0; transform-origin:380px 180px;
     filter:drop-shadow(0 0 12px rgba(255,122,26,.5));
   }
-  .echo.e1{animation:echo-out 1s  cubic-bezier(.2,.6,.4,1) 1.55s forwards}
+  .echo.e1{animation:echo-out 1s   cubic-bezier(.2,.6,.4,1) 1.55s forwards}
   .echo.e2{animation:echo-out .95s cubic-bezier(.2,.6,.4,1) 1.85s forwards}
-  .echo.e3{animation:echo-out .9s cubic-bezier(.2,.6,.4,1) 2.12s forwards}
+  .echo.e3{animation:echo-out .9s  cubic-bezier(.2,.6,.4,1) 2.12s forwards}
   .echo.e4{animation:echo-out .85s cubic-bezier(.2,.6,.4,1) 2.36s forwards}
-  .echo.e5{animation:echo-out .8s cubic-bezier(.2,.6,.4,1) 2.58s forwards}
+  .echo.e5{animation:echo-out .8s  cubic-bezier(.2,.6,.4,1) 2.58s forwards}
   .echo.e6{animation:echo-out .75s cubic-bezier(.2,.6,.4,1) 2.78s forwards}
   @keyframes echo-out{
-    0%  {opacity:0;  transform:scale(1)}
-    18% {opacity:.75}
-    100%{opacity:0;  transform:scale(2.1)}
+    0%{opacity:0; transform:scale(1)} 18%{opacity:.75}
+    100%{opacity:0; transform:scale(2.1)}
   }
 
-  /* --- YAZI --- */
   .wordmark{
     position:absolute; inset:0;
     display:flex; align-items:center; justify-content:center; gap:.02em;
@@ -142,52 +140,39 @@
     animation:letter-in .5s cubic-bezier(.2,.9,.25,1.15) forwards,
               shimmer 1.8s linear 1.6s infinite;
   }
-  .wordmark span:nth-child(1){animation-delay:.9s,  1.6s}
-  .wordmark span:nth-child(2){animation-delay:.98s, 1.6s}
+  .wordmark span:nth-child(1){animation-delay:.9s,1.6s}
+  .wordmark span:nth-child(2){animation-delay:.98s,1.6s}
   .wordmark span:nth-child(3){animation-delay:1.06s,1.6s}
   .wordmark span:nth-child(4){animation-delay:1.14s,1.6s}
   .wordmark span:nth-child(5){animation-delay:1.22s,1.6s}
-  .wordmark span:nth-child(6){animation-delay:1.3s, 1.6s}
+  .wordmark span:nth-child(6){animation-delay:1.3s,1.6s}
   @keyframes letter-in{
     from{opacity:0; transform:translateY(26px) rotateX(60deg); filter:blur(8px)}
-    to  {opacity:1; transform:translateY(0)    rotateX(0);     filter:blur(0)}
+    to  {opacity:1; transform:translateY(0) rotateX(0); filter:blur(0)}
   }
-  @keyframes shimmer{
-    from{background-position:130% 0}
-    to  {background-position:-150% 0}
-  }
-  @keyframes word-blast{
-    to{opacity:0; transform:scale(1.5); filter:blur(16px); letter-spacing:.5em}
-  }
+  @keyframes shimmer{from{background-position:130% 0} to{background-position:-150% 0}}
+  @keyframes word-blast{to{opacity:0; transform:scale(1.5); filter:blur(16px); letter-spacing:.5em}}
 
-  /* --- PATLAMA: yankılar zirveye ulaşınca --- */
   .flash{
     position:absolute; left:50%; top:50%;
-    width:40px; height:40px; margin:-20px 0 0 -20px;
-    border-radius:50%;
+    width:40px; height:40px; margin:-20px 0 0 -20px; border-radius:50%;
     background:radial-gradient(circle, #fff 0%, rgba(255,217,143,.95) 22%, rgba(255,122,26,.8) 40%, rgba(255,61,31,.4) 58%, transparent 72%);
     opacity:0; scale:0;
     animation:flash .6s cubic-bezier(.2,.8,.3,1) 3.05s forwards;
   }
-  @keyframes flash{
-    0%  {opacity:0; scale:0}
-    25% {opacity:1; scale:7}
-    100%{opacity:0; scale:16}
-  }
+  @keyframes flash{0%{opacity:0;scale:0} 25%{opacity:1;scale:7} 100%{opacity:0;scale:16}}
   .spark{
     position:absolute; left:50%; top:50%;
     width:3px; height:70px; margin:-35px 0 0 -1.5px;
     background:linear-gradient(180deg, var(--spark-c, var(--flame)), transparent);
-    border-radius:2px; opacity:0;
-    transform-origin:center;
+    border-radius:2px; opacity:0; transform-origin:center;
     animation:spark .75s cubic-bezier(.2,.8,.4,1) 3.1s forwards;
   }
   @keyframes spark{
-    0%  {opacity:0; transform:rotate(var(--r)) translateY(0)      scaleY(.3)}
-    20% {opacity:1}
+    0%{opacity:0; transform:rotate(var(--r)) translateY(0) scaleY(.3)}
+    20%{opacity:1}
     100%{opacity:0; transform:rotate(var(--r)) translateY(-190px) scaleY(1.5)}
   }
-  /* patlama şok dalgası halkası */
   .shockwave{
     position:absolute; left:50%; top:50%;
     width:120px; height:120px; margin:-60px 0 0 -60px;
@@ -196,100 +181,315 @@
     box-shadow:0 0 30px rgba(255,122,26,.6), inset 0 0 20px rgba(255,122,26,.4);
     animation:shock .8s cubic-bezier(.2,.7,.3,1) 3.1s forwards;
   }
-  @keyframes shock{
-    0%  {opacity:0; scale:.3; border-width:6px}
-    15% {opacity:1}
-    100%{opacity:0; scale:12; border-width:1px}
-  }
+  @keyframes shock{0%{opacity:0;scale:.3;border-width:6px} 15%{opacity:1} 100%{opacity:0;scale:12;border-width:1px}}
 
-  /* ================= SİTE: patlamayla birlikte dairesel açılır ================= */
+  /* ================= SİTE ================= */
   .site{
-    position:fixed; inset:0; z-index:40;
-    display:flex; flex-direction:column;
-    background:
-      radial-gradient(ellipse 80% 60% at 70% -10%, rgba(255,122,26,.14), transparent),
-      radial-gradient(ellipse 60% 50% at 15% 110%, rgba(255,61,31,.1), transparent),
-      linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
+    position:relative; z-index:1; min-height:100vh;
+    background:var(--bg-deep);
     clip-path:circle(0% at 50% 50%);
     animation:site-reveal .95s cubic-bezier(.6,0,.3,1) 3.25s forwards;
   }
-  @keyframes site-reveal{
-    from{clip-path:circle(0% at 50% 50%)}
-    to  {clip-path:circle(120% at 50% 50%)}
-  }
+  @keyframes site-reveal{from{clip-path:circle(0% at 50% 50%)} to{clip-path:circle(150% at 50% 50%)}}
+  .site.revealed{clip-path:none; animation:none}
 
+  /* --- NAV --- */
   .nav{
-    display:flex; align-items:center; justify-content:space-between;
-    padding:1rem clamp(1rem,5vw,3rem);
-    background:rgba(255,255,255,.03);
-    backdrop-filter:blur(14px);
-    border-bottom:1px solid rgba(255,255,255,.06);
+    position:fixed; top:0; left:0; right:0; z-index:30;
+    display:flex; align-items:center; gap:1.4rem;
+    padding:.8rem clamp(1rem,4vw,3rem);
+    background:linear-gradient(180deg, rgba(10,5,3,.92), rgba(10,5,3,.6) 80%, transparent);
   }
-  .logo{display:flex; align-items:center; gap:.6rem; font-weight:800; font-size:1.3rem; letter-spacing:.05em}
-  .logo svg{width:34px; height:26px; filter:drop-shadow(0 0 8px rgba(255,122,26,.55))}
-  .nav a{color:var(--muted); text-decoration:none; margin-left:1.4rem; font-size:.95rem; transition:color .2s}
-  .nav a:hover,.nav a:focus-visible{color:var(--text)}
-  .nav a:focus-visible{outline:2px solid var(--flame); outline-offset:4px; border-radius:4px}
+  .nav.scrolled{background:rgba(10,5,3,.92); backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(255,255,255,.06)}
+  .logo{display:flex; align-items:center; gap:.5rem; font-weight:800; font-size:1.15rem;
+    letter-spacing:.04em; cursor:pointer; flex-shrink:0}
+  .logo svg{width:30px; height:23px; filter:drop-shadow(0 0 8px rgba(255,122,26,.55))}
+  .nav-links{display:flex; gap:1.2rem}
+  .nav-links a{color:var(--muted); text-decoration:none; font-size:.88rem; font-weight:600;
+    transition:color .2s; cursor:pointer}
+  .nav-links a:hover{color:var(--text)}
+  @media (max-width:640px){.nav-links{display:none}}
 
-  .hero{flex:1; display:grid; place-items:center; text-align:center; padding:1rem}
-  .hero h1{font-size:clamp(1.8rem,5vw,3.2rem); font-weight:800; margin-bottom:.8rem}
-  .hero h1 em{
-    font-style:normal;
-    background:linear-gradient(90deg, var(--ember), var(--flame), var(--amber));
-    -webkit-background-clip:text; background-clip:text;
-    -webkit-text-fill-color:transparent; color:transparent;
+  .searchbox{flex:1; max-width:340px; margin-left:auto; position:relative}
+  .searchbox input{
+    width:100%; padding:.5rem 1rem .5rem 2.2rem;
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:999px; color:var(--text); font-size:.88rem;
+    outline:none; transition:border-color .2s;
+    font-family:inherit;
   }
-  .hero p{color:var(--muted); max-width:34rem; margin:0 auto 1.6rem; line-height:1.6}
-  .btn{
-    display:inline-block; padding:.9rem 2.3rem; border-radius:999px;
-    background:linear-gradient(120deg, var(--ember), var(--flame) 55%, var(--amber));
-    color:#fff; font-weight:700; text-decoration:none;
-    box-shadow:0 8px 30px rgba(255,122,26,.4), 0 2px 10px rgba(255,61,31,.3);
-    transition:transform .2s, box-shadow .2s, filter .2s;
+  .searchbox input::placeholder{color:var(--muted)}
+  .searchbox input:focus{border-color:var(--flame)}
+  .searchbox::before{
+    content:"🔍"; position:absolute; left:.8rem; top:50%;
+    transform:translateY(-50%); font-size:.75rem; opacity:.6;
   }
-  .btn:hover{transform:translateY(-2px); filter:brightness(1.08);
-    box-shadow:0 12px 40px rgba(255,122,26,.55), 0 4px 14px rgba(255,61,31,.4)}
-  .btn:focus-visible{outline:3px solid var(--hot); outline-offset:3px}
+  .lang{display:flex; gap:.3rem; flex-shrink:0}
+  .lang button{
+    padding:.3rem .7rem; border-radius:999px; font-size:.75rem; font-weight:700;
+    border:1px solid rgba(255,255,255,.15); background:transparent;
+    color:var(--muted); cursor:pointer; transition:all .2s;
+  }
+  .lang button.active{
+    background:linear-gradient(120deg, var(--ember), var(--flame));
+    border-color:transparent; color:#fff;
+  }
 
-  .replay{
-    position:fixed; right:1.2rem; bottom:1.2rem; z-index:60;
-    background:rgba(255,255,255,.04); backdrop-filter:blur(10px);
-    border:1px solid rgba(255,255,255,.12);
-    color:var(--muted); border-radius:999px;
-    padding:.5rem 1.1rem; font-size:.85rem; cursor:pointer;
-    opacity:0; animation:replay-in .5s ease 4.5s forwards;
+  /* --- HERO --- */
+  .hero{
+    position:relative; min-height:78vh;
+    display:flex; align-items:center;
+    padding:6rem clamp(1rem,5vw,4rem) 4rem;
+    background-size:cover; background-position:center 20%;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:""; position:absolute; inset:0;
+    background:
+      linear-gradient(90deg, rgba(18,10,5,.96) 0%, rgba(38,18,8,.82) 45%, rgba(60,28,10,.45) 100%),
+      linear-gradient(0deg, var(--bg-deep) 0%, transparent 35%);
+  }
+  .hero-crescent{
+    position:absolute; right:clamp(-4rem,2vw,4rem); top:8%;
+    width:clamp(180px,26vw,340px); opacity:.5;
+    filter:drop-shadow(0 0 40px rgba(255,122,26,.35));
+    pointer-events:none;
+  }
+  .hero-inner{position:relative; max-width:620px}
+  .hero-tag{
+    display:inline-block; font-size:.7rem; font-weight:800; letter-spacing:.22em;
+    padding:.35rem .9rem; border-radius:999px; margin-bottom:1rem;
+    color:var(--amber); border:1px solid rgba(255,179,60,.45);
+    background:rgba(255,122,26,.1); text-transform:uppercase;
+  }
+  .hero h1{
+    font-size:clamp(2.4rem,6vw,4.2rem); font-weight:800;
+    letter-spacing:.01em; line-height:1.05; margin-bottom:.9rem;
+  }
+  .hero-meta{
+    display:flex; align-items:center; gap:1rem; flex-wrap:wrap;
+    color:var(--muted); font-size:.92rem; margin-bottom:1rem;
+  }
+  .hero-meta .rating{color:var(--amber); font-weight:800}
+  .hero-meta .pill{
+    font-size:.68rem; font-weight:700; padding:.15rem .55rem;
+    border:1px solid rgba(255,255,255,.25); border-radius:6px; color:var(--text);
+  }
+  .hero-overview{
+    color:#DACDBE; line-height:1.6; font-size:.98rem;
+    max-width:48ch; margin-bottom:1.6rem;
+    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
+  }
+  .hero-actions{display:flex; gap:.8rem; flex-wrap:wrap}
+  .btn-primary{
+    display:inline-flex; align-items:center; gap:.5rem;
+    padding:.75rem 1.8rem; border-radius:999px; border:none; cursor:pointer;
+    background:linear-gradient(120deg, var(--ember), var(--flame) 60%, var(--amber) 130%);
+    color:#fff; font-weight:700; font-size:.95rem;
+    box-shadow:0 6px 26px rgba(255,122,26,.4);
+    transition:transform .2s, filter .2s;
+  }
+  .btn-primary:hover{transform:translateY(-2px); filter:brightness(1.08)}
+  .btn-ghost{
+    display:inline-flex; align-items:center; gap:.5rem;
+    padding:.75rem 1.6rem; border-radius:999px; cursor:pointer;
+    background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.18);
+    color:var(--text); font-weight:600; font-size:.95rem;
+    transition:background .2s, border-color .2s;
+  }
+  .btn-ghost:hover{background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.35)}
+
+  /* --- REKLAM ALANI --- */
+  .ad-strip{
+    margin:0 clamp(1rem,4vw,3rem);
+    padding:1.2rem; border-radius:10px;
+    border:1px dashed rgba(255,179,60,.25);
+    color:rgba(160,141,124,.6);
+    font-size:.68rem; letter-spacing:.3em; text-align:center; text-transform:uppercase;
+    background:repeating-linear-gradient(45deg, transparent, transparent 12px,
+      rgba(255,122,26,.03) 12px, rgba(255,122,26,.03) 24px);
+  }
+
+  /* --- SIRALAR --- */
+  main{padding:1rem 0 3rem}
+  .row-section{margin-top:2.2rem}
+  .row-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    padding:0 clamp(1rem,4vw,3rem); margin-bottom:.9rem;
+  }
+  .row-head h2{font-size:1.15rem; font-weight:800; letter-spacing:.01em}
+  .row-head a{
+    color:var(--amber); font-size:.82rem; font-weight:600;
+    text-decoration:none; cursor:pointer; transition:color .2s;
+  }
+  .row-head a:hover{color:var(--hot)}
+  .row{
+    display:flex; gap:.9rem; overflow-x:auto;
+    padding:0 clamp(1rem,4vw,3rem) .6rem;
+    scroll-snap-type:x mandatory; scrollbar-width:none;
+  }
+  .row::-webkit-scrollbar{display:none}
+
+  /* --- KART --- */
+  .card{
+    position:relative; flex:0 0 158px; scroll-snap-align:start;
+    border-radius:12px; overflow:hidden; cursor:pointer;
+    background:var(--panel);
+    border:1px solid rgba(255,255,255,.05);
+    transition:transform .25s, box-shadow .25s, border-color .25s;
+  }
+  .card:hover{
+    transform:translateY(-5px) scale(1.03);
+    box-shadow:0 14px 34px rgba(255,122,26,.28);
+    border-color:rgba(255,122,26,.45);
+  }
+  .card img{width:100%; aspect-ratio:2/3; object-fit:cover; display:block; background:#221408}
+  .card .noposter{
+    width:100%; aspect-ratio:2/3; display:grid; place-items:center;
+    color:var(--muted); font-size:.8rem; text-align:center; padding:.8rem;
+  }
+  .card .shade{
+    position:absolute; inset:0;
+    background:linear-gradient(0deg, rgba(8,4,2,.92) 0%, rgba(8,4,2,.35) 28%, transparent 55%);
+    pointer-events:none;
+  }
+  .card .caption{
+    position:absolute; left:0; right:0; bottom:0; padding:.6rem .7rem;
+  }
+  .card .title{
+    font-size:.82rem; font-weight:800; text-transform:uppercase;
+    letter-spacing:.03em; line-height:1.2; margin-bottom:.2rem;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+  }
+  .card .sub{font-size:.68rem; color:var(--muted); font-weight:600; letter-spacing:.05em; text-transform:uppercase}
+  .card .score{
+    position:absolute; top:.5rem; left:.5rem;
+    font-size:.72rem; font-weight:800;
+    padding:.22rem .55rem; border-radius:999px;
+    background:rgba(10,5,3,.8); backdrop-filter:blur(6px);
+    border:1px solid rgba(255,179,60,.4); color:var(--amber);
+  }
+  .grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(150px,1fr));
+    gap:.9rem; padding:0 clamp(1rem,4vw,3rem);
+  }
+  .grid .card{flex:none}
+
+  .status{text-align:center; color:var(--muted); padding:2rem 1rem; font-size:.92rem}
+  .status.error{color:var(--ember)}
+  .loader{
+    width:38px; height:38px; margin:2rem auto; border-radius:50%;
+    border:3px solid rgba(255,122,26,.2); border-top-color:var(--flame);
+    animation:spin .8s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  .back-btn{
+    margin:1rem clamp(1rem,4vw,3rem) 0;
+    display:inline-flex; align-items:center; gap:.4rem;
+    background:none; border:none; color:var(--amber);
+    font-size:.9rem; font-weight:600; cursor:pointer;
+  }
+  .back-btn:hover{color:var(--hot)}
+
+  /* --- MODAL --- */
+  .modal-backdrop{
+    position:fixed; inset:0; z-index:80;
+    background:rgba(5,3,2,.82); backdrop-filter:blur(8px);
+    display:none; align-items:flex-start; justify-content:center;
+    overflow-y:auto; padding:5vh 1rem 3rem;
+  }
+  .modal-backdrop.open{display:flex}
+  .modal-wrap{position:relative; width:min(720px,100%)}
+  .modal{
+    background:linear-gradient(180deg, #23150A, var(--panel));
+    border:1px solid rgba(255,179,60,.2);
+    border-radius:18px; overflow:hidden;
+    box-shadow:0 24px 80px rgba(0,0,0,.6), 0 0 60px rgba(255,122,26,.12);
+    animation:modal-in .3s cubic-bezier(.2,.9,.3,1);
+  }
+  @keyframes modal-in{from{opacity:0; transform:translateY(24px) scale(.97)} to{opacity:1}}
+  .modal .backdrop-img{width:100%; aspect-ratio:16/9; object-fit:cover; display:block; background:#221408}
+  .modal .body{padding:1.3rem 1.5rem 1.6rem}
+  .modal h2{font-size:1.5rem; font-weight:800; margin-bottom:.35rem}
+  .modal .sub{color:var(--muted); font-size:.9rem; margin-bottom:.9rem; display:flex; gap:1rem; flex-wrap:wrap}
+  .modal .sub .rating{color:var(--amber); font-weight:800}
+  .modal .overview{line-height:1.65; color:#E2D6C8; font-size:.96rem; margin-bottom:1.2rem}
+  .modal .close{
+    position:absolute; top:.8rem; right:.8rem; z-index:2;
+    width:36px; height:36px; border-radius:50%;
+    background:rgba(10,5,3,.7); backdrop-filter:blur(6px);
+    border:1px solid rgba(255,255,255,.15); color:var(--text);
+    font-size:1.05rem; cursor:pointer; transition:border-color .2s, color .2s;
+  }
+  .modal .close:hover{border-color:var(--flame); color:var(--amber)}
+  .trailer-frame{
+    width:100%; aspect-ratio:16/9; border:none; border-radius:12px;
+    margin-top:1rem; display:none; background:#000;
+  }
+  .trailer-frame.show{display:block}
+  .providers{margin-top:1.3rem}
+  .providers h3{font-size:.92rem; font-weight:700; margin-bottom:.6rem; color:var(--hot)}
+  .providers .logos{display:flex; gap:.6rem; flex-wrap:wrap}
+  .providers img{width:44px; height:44px; border-radius:10px; border:1px solid rgba(255,255,255,.1)}
+  .providers .none{color:var(--muted); font-size:.86rem}
+  .providers .jw{color:var(--muted); font-size:.68rem; margin-top:.5rem}
+
+  /* --- FOOTER --- */
+  footer{
+    margin-top:3rem;
+    padding:1.8rem clamp(1rem,4vw,3rem) 1.4rem;
+    border-top:1px solid rgba(255,255,255,.06);
+  }
+  .footer-top{
+    display:flex; flex-wrap:wrap; align-items:center; gap:1.2rem;
+    justify-content:space-between; margin-bottom:1rem;
+  }
+  .footer-links{display:flex; gap:1.2rem; flex-wrap:wrap}
+  .footer-links a{color:var(--muted); font-size:.82rem; text-decoration:none}
+  .footer-links a:hover{color:var(--text)}
+  .replay-btn{
+    display:inline-flex; align-items:center; gap:.45rem;
+    padding:.5rem 1.1rem; border-radius:999px; cursor:pointer;
+    background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.14);
+    color:var(--muted); font-size:.8rem; font-weight:600;
     transition:color .2s, border-color .2s;
   }
-  @keyframes replay-in{to{opacity:1}}
-  .replay:hover{color:var(--text); border-color:var(--flame)}
+  .replay-btn:hover{color:var(--text); border-color:var(--flame)}
+  .footer-bottom{
+    display:flex; flex-wrap:wrap; gap:.8rem; align-items:center;
+    justify-content:space-between;
+    color:rgba(160,141,124,.7); font-size:.74rem;
+  }
+  .tmdb-credit{display:flex; align-items:center; gap:.6rem; flex-wrap:wrap}
+  .tmdb-credit img{height:11px}
+  .footer-bottom a{color:var(--amber); text-decoration:none}
 
   @media (prefers-reduced-motion: reduce){
     .intro{display:none}
     .site{clip-path:none; animation:none}
-    .replay{opacity:1; animation:none}
     .aurora i,.grain{animation:none}
   }
 </style>
 </head>
-<body>
+<body class="intro-active">
 
   <!-- ============ AÇILIŞ ANİMASYONU ============ -->
   <div class="intro" id="intro" aria-hidden="true">
     <div class="aurora"><i></i><i></i><i></i></div>
     <div class="stars" id="stars"></div>
     <div class="grain"></div>
-
     <div class="stage">
       <svg viewBox="0 0 760 360" role="img" aria-label="Dizify açılış animasyonu">
         <defs>
           <linearGradient id="gradL" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%"  stop-color="#FFD98F"/>
-            <stop offset="55%" stop-color="#FF9A2E"/>
+            <stop offset="0%" stop-color="#FFD98F"/><stop offset="55%" stop-color="#FF9A2E"/>
             <stop offset="100%" stop-color="#FF7A1A"/>
           </linearGradient>
           <linearGradient id="gradR" x1="1" y1="0" x2="0" y2="1">
-            <stop offset="0%"  stop-color="#FFB33C"/>
-            <stop offset="55%" stop-color="#FF7A1A"/>
+            <stop offset="0%" stop-color="#FFB33C"/><stop offset="55%" stop-color="#FF7A1A"/>
             <stop offset="100%" stop-color="#FF3D1F"/>
           </linearGradient>
           <mask id="cutL">
@@ -300,22 +500,17 @@
             <rect x="-100" y="-100" width="960" height="560" fill="#fff"/>
             <circle cx="538" cy="180" r="86" fill="#000"/>
           </mask>
-          <!-- Yankılar için hilal çifti şablonu -->
           <g id="pair">
             <circle cx="194" cy="180" r="96" fill="url(#gradL)" mask="url(#cutL)"/>
             <circle cx="566" cy="180" r="96" fill="url(#gradR)" mask="url(#cutR)"/>
           </g>
         </defs>
-
-        <!-- Üst üste çoğalan hilal yankıları (arkadan öne) -->
         <use href="#pair" class="echo e1"/>
         <use href="#pair" class="echo e2"/>
         <use href="#pair" class="echo e3"/>
         <use href="#pair" class="echo e4"/>
         <use href="#pair" class="echo e5"/>
         <use href="#pair" class="echo e6"/>
-
-        <!-- Ana hilaller -->
         <g class="crescent left">
           <circle cx="194" cy="180" r="96" fill="url(#gradL)" mask="url(#cutL)"/>
         </g>
@@ -323,32 +518,30 @@
           <circle cx="566" cy="180" r="96" fill="url(#gradR)" mask="url(#cutR)"/>
         </g>
       </svg>
-
       <div class="wordmark" aria-hidden="true">
         <span>D</span><span>i</span><span>z</span><span>i</span><span>f</span><span>y</span>
       </div>
-
       <div class="flash"></div>
       <div class="shockwave"></div>
-      <i class="spark" style="--r:0deg;   --spark-c:#FF7A1A"></i>
-      <i class="spark" style="--r:30deg;  --spark-c:#FFB33C"></i>
-      <i class="spark" style="--r:60deg;  --spark-c:#FF3D1F"></i>
-      <i class="spark" style="--r:90deg;  --spark-c:#FFD98F"></i>
-      <i class="spark" style="--r:120deg; --spark-c:#FF7A1A"></i>
-      <i class="spark" style="--r:150deg; --spark-c:#FFB33C"></i>
-      <i class="spark" style="--r:180deg; --spark-c:#FF3D1F"></i>
-      <i class="spark" style="--r:210deg; --spark-c:#FFD98F"></i>
-      <i class="spark" style="--r:240deg; --spark-c:#FF7A1A"></i>
-      <i class="spark" style="--r:270deg; --spark-c:#FFB33C"></i>
-      <i class="spark" style="--r:300deg; --spark-c:#FF3D1F"></i>
-      <i class="spark" style="--r:330deg; --spark-c:#FFD98F"></i>
+      <i class="spark" style="--r:0deg;--spark-c:#FF7A1A"></i>
+      <i class="spark" style="--r:30deg;--spark-c:#FFB33C"></i>
+      <i class="spark" style="--r:60deg;--spark-c:#FF3D1F"></i>
+      <i class="spark" style="--r:90deg;--spark-c:#FFD98F"></i>
+      <i class="spark" style="--r:120deg;--spark-c:#FF7A1A"></i>
+      <i class="spark" style="--r:150deg;--spark-c:#FFB33C"></i>
+      <i class="spark" style="--r:180deg;--spark-c:#FF3D1F"></i>
+      <i class="spark" style="--r:210deg;--spark-c:#FFD98F"></i>
+      <i class="spark" style="--r:240deg;--spark-c:#FF7A1A"></i>
+      <i class="spark" style="--r:270deg;--spark-c:#FFB33C"></i>
+      <i class="spark" style="--r:300deg;--spark-c:#FF3D1F"></i>
+      <i class="spark" style="--r:330deg;--spark-c:#FFD98F"></i>
     </div>
   </div>
 
-  <!-- ============ SİTE İÇERİĞİ ============ -->
-  <div class="site">
-    <nav class="nav">
-      <div class="logo">
+  <!-- ============ SİTE ============ -->
+  <div class="site" id="site">
+    <nav class="nav" id="navbar">
+      <div class="logo" onclick="goHome()">
         <svg viewBox="0 0 52 40" aria-hidden="true">
           <defs>
             <linearGradient id="lgL" x1="0" y1="0" x2="1" y2="1">
@@ -365,35 +558,401 @@
         </svg>
         Dizify
       </div>
-      <div>
-        <a href="#">Diziler</a>
-        <a href="#">Filmler</a>
-        <a href="#">Listem</a>
+      <div class="nav-links">
+        <a onclick="goHome()">Ana Sayfa</a>
+        <a href="#row-trend" onclick="goHome()">Filmler</a>
+        <a href="#row-aksiyon" onclick="goHome()">Kategoriler</a>
+      </div>
+      <div class="searchbox">
+        <input type="search" id="searchInput" placeholder="Film veya dizi ara..." autocomplete="off">
+      </div>
+      <div class="lang">
+        <button id="langTR" class="active" onclick="setLang('tr-TR')">TR</button>
+        <button id="langEN" onclick="setLang('en-US')">EN</button>
       </div>
     </nav>
-    <main class="hero">
-      <div>
-        <h1>Ateşi yak. <em>Dizify</em> başlıyor.</h1>
-        <p>Buraya sitenin gerçek içeriği gelecek — patlamayla birlikte bu ekran dairesel bir geçişle açılıyor.</p>
-        <a class="btn" href="#">Keşfetmeye Başla</a>
+
+    <!-- HERO: Haftanın Filmi -->
+    <section class="hero" id="hero">
+      <svg class="hero-crescent" viewBox="0 0 200 200" aria-hidden="true">
+        <defs>
+          <linearGradient id="hcg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#FFB33C"/><stop offset="100%" stop-color="#FF3D1F"/>
+          </linearGradient>
+          <mask id="hcm"><rect width="200" height="200" fill="#fff"/><circle cx="86" cy="100" r="72" fill="#000"/></mask>
+        </defs>
+        <circle cx="100" cy="100" r="80" fill="url(#hcg)" mask="url(#hcm)"/>
+      </svg>
+      <div class="hero-inner" id="heroInner">
+        <div class="loader"></div>
       </div>
+    </section>
+
+    <div class="ad-strip">Reklam Alanı · Google AdSense · 970×90</div>
+
+    <main id="homeSection">
+      <!-- Sıralar JS ile doldurulur -->
     </main>
+
+    <!-- Arama / Tür grid görünümü -->
+    <div id="gridSection" style="display:none">
+      <button class="back-btn" onclick="goHome()">← Ana Sayfaya Dön</button>
+      <h2 class="row-head" style="padding-top:1rem"><span id="gridTitle"></span></h2>
+      <div class="grid" id="gridItems"></div>
+      <div id="gridStatus"></div>
+    </div>
+
+    <footer>
+      <div class="footer-top">
+        <div class="logo" onclick="goHome()" style="font-size:1rem">
+          <svg viewBox="0 0 52 40" width="26" height="20" aria-hidden="true">
+            <circle cx="15" cy="20" r="13" fill="url(#lgL)" mask="url(#lmL)"/>
+            <circle cx="37" cy="20" r="13" fill="url(#lgR)" mask="url(#lmR)"/>
+          </svg>
+          Dizify
+        </div>
+        <div class="footer-links">
+          <a href="#">Hakkında</a>
+          <a href="#">İletişim</a>
+          <a href="#">Gizlilik Politikası</a>
+          <a href="#">Çerez Politikası</a>
+        </div>
+        <button class="replay-btn" onclick="replayIntro()">↻ Açılış animasyonunu oynat</button>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Dizify — Bu site bir tasarım projesidir, film/dizi verileri gösterim amaçlıdır.</span>
+        <span class="tmdb-credit">
+          <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg" alt="TMDB">
+          This product uses the TMDB API but is not endorsed or certified by TMDB. ·
+          İzleme verisi: <a href="https://www.justwatch.com" target="_blank" rel="noopener">JustWatch</a>
+        </span>
+      </div>
+    </footer>
   </div>
 
-  <button class="replay" onclick="location.reload()">↻ Animasyonu tekrar oynat</button>
+  <!-- ============ DETAY MODALI ============ -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal-wrap">
+      <div class="modal" id="modal"></div>
+    </div>
+  </div>
 
-  <script>
-    const stars = document.getElementById('stars');
-    for(let i = 0; i < 60; i++){
-      const s = document.createElement('i');
-      s.style.left = Math.random() * 100 + '%';
-      s.style.top = Math.random() * 100 + '%';
-      s.style.animationDelay = (Math.random() * 3) + 's';
-      s.style.animationDuration = (2 + Math.random() * 3) + 's';
-      s.style.width = s.style.height = (1 + Math.random() * 2) + 'px';
-      stars.appendChild(s);
+<script>
+/* ================= AYARLAR ================= */
+const API_KEY = '4167c70c2f1823cb24e347d8a88e748b';
+const API = 'https://api.themoviedb.org/3';
+const IMG = 'https://image.tmdb.org/t/p';
+let LANG = 'tr-TR';
+
+/* Tür sıraları: PDF'teki bölümler */
+const ROWS = [
+  { id:'trend',   title:'Şu An Trend',       path:'/trending/movie/week', params:{} },
+  { id:'dizi',    title:'Popüler Diziler',   path:'/tv/popular',          params:{}, type:'tv' },
+  { id:'aksiyon', title:'Aksiyon & Macera',  path:'/discover/movie', params:{with_genres:'28,12', sort_by:'popularity.desc'} },
+  { id:'bilim',   title:'Bilim Kurgu',       path:'/discover/movie', params:{with_genres:'878',   sort_by:'popularity.desc'} },
+  { id:'dram',    title:'Dram',              path:'/discover/movie', params:{with_genres:'18',    sort_by:'popularity.desc'} },
+  { id:'gerilim', title:'Gerilim & Korku',   path:'/discover/movie', params:{with_genres:'53,27', sort_by:'popularity.desc'} },
+  { id:'komedi',  title:'Komedi',            path:'/discover/movie', params:{with_genres:'35',    sort_by:'popularity.desc'} },
+];
+
+/* ================= INTRO ================= */
+const stars = document.getElementById('stars');
+for(let i = 0; i < 60; i++){
+  const s = document.createElement('i');
+  s.style.left = Math.random() * 100 + '%';
+  s.style.top = Math.random() * 100 + '%';
+  s.style.animationDelay = (Math.random() * 3) + 's';
+  s.style.animationDuration = (2 + Math.random() * 3) + 's';
+  s.style.width = s.style.height = (1 + Math.random() * 2) + 'px';
+  stars.appendChild(s);
+}
+// Intro oturum başına bir kez oynar
+if(sessionStorage.getItem('dizifyIntroSeen')){
+  document.getElementById('intro').classList.add('skip');
+  document.getElementById('site').classList.add('revealed');
+  document.body.classList.remove('intro-active');
+}else{
+  setTimeout(() => {
+    document.body.classList.remove('intro-active');
+    document.getElementById('site').classList.add('revealed');
+    sessionStorage.setItem('dizifyIntroSeen', '1');
+  }, 4400);
+}
+function replayIntro(){
+  sessionStorage.removeItem('dizifyIntroSeen');
+  location.reload();
+}
+
+/* Nav: kaydırınca koyulaşır */
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+});
+
+/* ================= YARDIMCILAR ================= */
+async function tmdb(path, params = {}){
+  const url = new URL(API + path);
+  url.searchParams.set('api_key', API_KEY);
+  url.searchParams.set('language', LANG);
+  for(const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
+  const res = await fetch(url);
+  if(!res.ok) throw new Error('TMDB isteği başarısız: ' + res.status);
+  return res.json();
+}
+const esc = s => String(s).replace(/'/g, "\\'");
+
+const GENRE_TR = {28:'Aksiyon',12:'Macera',16:'Animasyon',35:'Komedi',80:'Suç',99:'Belgesel',
+  18:'Dram',10751:'Aile',14:'Fantastik',36:'Tarih',27:'Korku',10402:'Müzik',9648:'Gizem',
+  10749:'Romantik',878:'Bilim Kurgu',53:'Gerilim',10752:'Savaş',37:'Western',
+  10759:'Aksiyon & Macera',10765:'Bilim Kurgu & Fantazi',10764:'Reality',10767:'Talk Show',
+  10766:'Pembe Dizi',10768:'Savaş & Politik',10762:'Çocuk',10763:'Haber'};
+
+function cardHTML(item, forcedType){
+  const isTV = forcedType === 'tv' || item.media_type === 'tv' || (!item.title && item.name);
+  const type = isTV ? 'tv' : 'movie';
+  const title = item.title || item.name || 'İsimsiz';
+  const year = (item.release_date || item.first_air_date || '').slice(0, 4);
+  const genre = item.genre_ids && item.genre_ids.length ? (GENRE_TR[item.genre_ids[0]] || '') : '';
+  const rating = item.vote_average ? item.vote_average.toFixed(1) : '—';
+  const poster = item.poster_path
+    ? `<img loading="lazy" src="${IMG}/w342${item.poster_path}" alt="${title} afişi">`
+    : `<div class="noposter">${title}</div>`;
+  return `
+    <div class="card" onclick="openDetail(${item.id}, '${type}')">
+      <span class="score">★ ${rating}</span>
+      ${poster}
+      <div class="shade"></div>
+      <div class="caption">
+        <div class="title">${title}</div>
+        <div class="sub">${year}${genre ? ' · ' + genre : (isTV ? ' · Dizi' : '')}</div>
+      </div>
+    </div>`;
+}
+
+/* ================= HERO: Haftanın Filmi ================= */
+async function loadHero(){
+  const el = document.getElementById('heroInner');
+  try{
+    const trend = await tmdb('/trending/movie/week');
+    const pick = trend.results.find(m => m.backdrop_path) || trend.results[0];
+    const detail = await tmdb('/movie/' + pick.id);
+    const hero = document.getElementById('hero');
+    if(detail.backdrop_path){
+      hero.style.backgroundImage = `url(${IMG}/w1280${detail.backdrop_path})`;
     }
-  </script>
+    const year = (detail.release_date || '').slice(0, 4);
+    const genres = (detail.genres || []).slice(0, 2).map(g => g.name).join(' · ');
+    el.innerHTML = `
+      <span class="hero-tag">Haftanın Filmi</span>
+      <h1>${detail.title}</h1>
+      <div class="hero-meta">
+        <span class="rating">★ ${detail.vote_average ? detail.vote_average.toFixed(1) : '—'}</span>
+        <span>${year}</span>
+        ${detail.runtime ? `<span>${detail.runtime} dk</span>` : ''}
+        ${genres ? `<span class="pill">${genres}</span>` : ''}
+      </div>
+      <p class="hero-overview">${detail.overview || ''}</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="openDetail(${detail.id}, 'movie')">▶ İzle</button>
+        <button class="btn-ghost" onclick="openDetail(${detail.id}, 'movie', true)">Fragman</button>
+      </div>`;
+  }catch(err){
+    el.innerHTML = '<div class="status error">Haftanın filmi yüklenemedi.</div>';
+    console.error(err);
+  }
+}
+
+/* ================= SIRALAR ================= */
+async function loadRows(){
+  const main = document.getElementById('homeSection');
+  main.innerHTML = ROWS.map(r => `
+    <section class="row-section" id="row-${r.id}">
+      <div class="row-head">
+        <h2>${r.title}</h2>
+        <a onclick="showAll('${r.id}')">Tümünü Gör →</a>
+      </div>
+      <div class="row" id="items-${r.id}"><div class="loader"></div></div>
+    </section>`).join('');
+
+  for(const r of ROWS){
+    try{
+      const data = await tmdb(r.path, r.params);
+      document.getElementById('items-' + r.id).innerHTML =
+        data.results.slice(0, 15).map(item => cardHTML(item, r.type)).join('');
+    }catch(err){
+      document.getElementById('items-' + r.id).innerHTML =
+        '<div class="status error">Yüklenemedi.</div>';
+      console.error(err);
+    }
+  }
+}
+
+/* ================= TÜMÜNÜ GÖR / GRID GÖRÜNÜMÜ ================= */
+async function showAll(rowId){
+  const r = ROWS.find(x => x.id === rowId);
+  if(!r) return;
+  document.getElementById('homeSection').style.display = 'none';
+  document.getElementById('hero').style.display = 'none';
+  document.querySelector('.ad-strip').style.display = 'none';
+  const gs = document.getElementById('gridSection');
+  gs.style.display = 'block';
+  document.getElementById('gridTitle').textContent = r.title;
+  const grid = document.getElementById('gridItems');
+  const status = document.getElementById('gridStatus');
+  grid.innerHTML = ''; status.innerHTML = '<div class="loader"></div>';
+  try{
+    const [p1, p2] = await Promise.all([
+      tmdb(r.path, {...r.params, page:1}),
+      tmdb(r.path, {...r.params, page:2})
+    ]);
+    const items = [...p1.results, ...p2.results];
+    grid.innerHTML = items.map(item => cardHTML(item, r.type)).join('');
+    status.innerHTML = '';
+  }catch(err){
+    status.innerHTML = '<div class="status error">Yüklenemedi.</div>';
+    console.error(err);
+  }
+  window.scrollTo({top:0});
+}
+
+function goHome(){
+  document.getElementById('gridSection').style.display = 'none';
+  document.getElementById('homeSection').style.display = 'block';
+  document.getElementById('hero').style.display = 'flex';
+  document.querySelector('.ad-strip').style.display = 'block';
+  document.getElementById('searchInput').value = '';
+}
+
+/* ================= ARAMA ================= */
+let searchTimer;
+const searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('input', () => {
+  clearTimeout(searchTimer);
+  const q = searchInput.value.trim();
+  if(q.length < 2){ goHome(); return; }
+  searchTimer = setTimeout(() => doSearch(q), 400);
+});
+
+async function doSearch(q){
+  document.getElementById('homeSection').style.display = 'none';
+  document.getElementById('hero').style.display = 'none';
+  document.querySelector('.ad-strip').style.display = 'none';
+  const gs = document.getElementById('gridSection');
+  gs.style.display = 'block';
+  document.getElementById('gridTitle').textContent = `"${q}" için sonuçlar`;
+  const grid = document.getElementById('gridItems');
+  const status = document.getElementById('gridStatus');
+  grid.innerHTML = ''; status.innerHTML = '<div class="loader"></div>';
+  try{
+    const data = await tmdb('/search/multi', { query:q });
+    const items = data.results.filter(x => x.media_type === 'movie' || x.media_type === 'tv');
+    if(items.length === 0){
+      status.innerHTML = '<div class="status">Sonuç bulunamadı.</div>';
+    }else{
+      grid.innerHTML = items.map(item => cardHTML(item)).join('');
+      status.innerHTML = '';
+    }
+  }catch(err){
+    status.innerHTML = '<div class="status error">Arama başarısız oldu.</div>';
+    console.error(err);
+  }
+}
+
+/* ================= DİL ================= */
+function setLang(l){
+  LANG = l;
+  document.getElementById('langTR').classList.toggle('active', l === 'tr-TR');
+  document.getElementById('langEN').classList.toggle('active', l === 'en-US');
+  goHome(); loadHero(); loadRows();
+}
+
+/* ================= DETAY MODALI ================= */
+const backdrop = document.getElementById('modalBackdrop');
+const modal = document.getElementById('modal');
+
+async function openDetail(id, type, autoTrailer = false){
+  backdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  modal.innerHTML = '<div class="body"><div class="loader"></div></div>';
+  try{
+    const data = await tmdb(`/${type}/${id}`, {
+      append_to_response:'videos,watch/providers',
+      include_video_language:'tr,en,null'
+    });
+    const title = data.title || data.name;
+    const year = (data.release_date || data.first_air_date || '').slice(0, 4);
+    const runtime = data.runtime ? `${data.runtime} dk`
+      : (data.number_of_seasons ? `${data.number_of_seasons} sezon` : '');
+    const genres = (data.genres || []).map(g => g.name).join(', ');
+    const rating = data.vote_average ? data.vote_average.toFixed(1) : '—';
+    const backdropImg = data.backdrop_path
+      ? `<img class="backdrop-img" src="${IMG}/w780${data.backdrop_path}" alt="">` : '';
+
+    const vids = (data.videos && data.videos.results) || [];
+    const trailer =
+      vids.find(v => v.site === 'YouTube' && v.type === 'Trailer' && v.iso_639_1 === 'tr') ||
+      vids.find(v => v.site === 'YouTube' && v.type === 'Trailer') ||
+      vids.find(v => v.site === 'YouTube');
+
+    const prov = data['watch/providers'] && data['watch/providers'].results
+      ? data['watch/providers'].results.TR : null;
+    const flatrate = prov && prov.flatrate ? prov.flatrate : [];
+    const provHTML = flatrate.length
+      ? flatrate.map(p =>
+          `<img src="${IMG}/w92${p.logo_path}" alt="${p.provider_name}" title="${p.provider_name}">`
+        ).join('')
+      : '<span class="none">Türkiye\'de abonelikle izlenebileceği bir platform bulunamadı.</span>';
+
+    modal.innerHTML = `
+      <button class="close" onclick="closeDetail()" aria-label="Kapat">✕</button>
+      ${backdropImg}
+      <div class="body">
+        <h2>${title}</h2>
+        <div class="sub">
+          <span>${year}</span>
+          ${runtime ? `<span>${runtime}</span>` : ''}
+          <span class="rating">★ ${rating}</span>
+        </div>
+        ${genres ? `<div class="sub"><span>${genres}</span></div>` : ''}
+        <p class="overview">${data.overview || 'Özet bulunamadı.'}</p>
+        ${trailer ? `
+          <button class="btn-primary" onclick="playTrailer('${esc(trailer.key)}')">▶ Fragmanı İzle</button>
+          <iframe class="trailer-frame" id="trailerFrame" allow="autoplay; encrypted-media" allowfullscreen title="${title} fragman"></iframe>
+        ` : ''}
+        <div class="providers">
+          <h3>Nerede izlenir? (Türkiye)</h3>
+          <div class="logos">${provHTML}</div>
+          <div class="jw">İzleme sağlayıcı verisi JustWatch tarafından sağlanır.</div>
+        </div>
+      </div>`;
+    if(autoTrailer && trailer) playTrailer(trailer.key);
+  }catch(err){
+    modal.innerHTML = `
+      <button class="close" onclick="closeDetail()" aria-label="Kapat">✕</button>
+      <div class="body"><div class="status error">Detaylar yüklenemedi.</div></div>`;
+    console.error(err);
+  }
+}
+
+function playTrailer(key){
+  const frame = document.getElementById('trailerFrame');
+  if(!frame) return;
+  frame.src = `https://www.youtube.com/embed/${key}?autoplay=1`;
+  frame.classList.add('show');
+  frame.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function closeDetail(){
+  backdrop.classList.remove('open');
+  document.body.style.overflow = '';
+  modal.innerHTML = '';
+}
+backdrop.addEventListener('click', e => { if(e.target === backdrop) closeDetail(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeDetail(); });
+
+/* ================= BAŞLAT ================= */
+loadHero();
+loadRows();
+</script>
 
 </body>
 </html>
