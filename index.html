@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dizify — Film & Dizi Keşfi</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 52 40'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23FFD98F'/%3E%3Cstop offset='100%25' stop-color='%23FF7A1A'/%3E%3C/linearGradient%3E%3ClinearGradient id='g2' x1='1' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%23FFB33C'/%3E%3Cstop offset='100%25' stop-color='%23FF3D1F'/%3E%3C/linearGradient%3E%3Cmask id='m1'%3E%3Crect width='52' height='40' fill='white'/%3E%3Ccircle cx='19' cy='20' r='11.5'/%3E%3C/mask%3E%3Cmask id='m2'%3E%3Crect width='52' height='40' fill='white'/%3E%3Ccircle cx='33' cy='20' r='11.5'/%3E%3C/mask%3E%3C/defs%3E%3Ccircle cx='15' cy='20' r='13' fill='url(%23g1)' mask='url(%23m1)'/%3E%3Ccircle cx='37' cy='20' r='13' fill='url(%23g2)' mask='url(%23m2)'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -394,6 +395,8 @@
   }
   .back-btn:hover{color:var(--hot)}
 
+  #gridSection{padding-top:4.8rem}
+
   /* --- MODAL --- */
   .modal-backdrop{
     position:fixed; inset:0; z-index:80;
@@ -559,9 +562,9 @@
         Dizify
       </div>
       <div class="nav-links">
-        <a onclick="goHome()">Ana Sayfa</a>
-        <a href="#row-trend" onclick="goHome()">Filmler</a>
-        <a href="#row-aksiyon" onclick="goHome()">Kategoriler</a>
+        <a id="navHome" onclick="goHome()">Ana Sayfa</a>
+        <a id="navMovies" href="#row-trend" onclick="goHome(true)">Filmler</a>
+        <a id="navCats" href="#row-aksiyon" onclick="goHome(true)">Kategoriler</a>
       </div>
       <div class="searchbox">
         <input type="search" id="searchInput" placeholder="Film veya dizi ara..." autocomplete="off">
@@ -596,7 +599,7 @@
 
     <!-- Arama / Tür grid görünümü -->
     <div id="gridSection" style="display:none">
-      <button class="back-btn" onclick="goHome()">← Ana Sayfaya Dön</button>
+      <button class="back-btn" id="backBtn" onclick="goHome()">← Ana Sayfaya Dön</button>
       <h2 class="row-head" style="padding-top:1rem"><span id="gridTitle"></span></h2>
       <div class="grid" id="gridItems"></div>
       <div id="gridStatus"></div>
@@ -612,15 +615,15 @@
           Dizify
         </div>
         <div class="footer-links">
-          <a href="#">Hakkında</a>
-          <a href="#">İletişim</a>
-          <a href="#">Gizlilik Politikası</a>
-          <a href="#">Çerez Politikası</a>
+          <a href="#" id="fAbout">Hakkında</a>
+          <a href="#" id="fContact">İletişim</a>
+          <a href="#" id="fPrivacy">Gizlilik Politikası</a>
+          <a href="#" id="fCookie">Çerez Politikası</a>
         </div>
-        <button class="replay-btn" onclick="replayIntro()">↻ Açılış animasyonunu oynat</button>
+        <button class="replay-btn" id="replayBtn" onclick="replayIntro()">↻ Açılış animasyonunu oynat</button>
       </div>
       <div class="footer-bottom">
-        <span>© 2026 Dizify — Bu site bir tasarım projesidir, film/dizi verileri gösterim amaçlıdır.</span>
+        <span id="copyText">© 2026 Dizify — Bu site bir tasarım projesidir, film/dizi verileri gösterim amaçlıdır.</span>
         <span class="tmdb-credit">
           <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg" alt="TMDB">
           This product uses the TMDB API but is not endorsed or certified by TMDB. ·
@@ -643,16 +646,62 @@ const API_KEY = '4167c70c2f1823cb24e347d8a88e748b';
 const API = 'https://api.themoviedb.org/3';
 const IMG = 'https://image.tmdb.org/t/p';
 let LANG = 'tr-TR';
+const L = () => LANG.startsWith('tr') ? 'tr' : 'en';
 
-/* Tür sıraları: PDF'teki bölümler */
+/* ================= ARAYÜZ ÇEVİRİLERİ ================= */
+const UI = {
+  tr:{
+    navHome:'Ana Sayfa', navMovies:'Filmler', navCats:'Kategoriler',
+    searchPh:'Film veya dizi ara...',
+    heroTag:'Haftanın Filmi', watch:'▶ İzle', trailerBtn:'Fragman',
+    seeAll:'Tümünü Gör →', back:'← Ana Sayfaya Dön',
+    noResults:'Sonuç bulunamadı.', loadFail:'Yüklenemedi.',
+    heroFail:'Haftanın filmi yüklenemedi.', searchFail:'Arama başarısız oldu.',
+    playTrailer:'▶ Fragmanı İzle', whereWatch:'Nerede izlenir? (Türkiye)',
+    noProvider:"Türkiye'de abonelikle izlenebileceği bir platform bulunamadı.",
+    jw:'İzleme sağlayıcı verisi JustWatch tarafından sağlanır.',
+    noOverview:'Özet bulunamadı.', detailFail:'Detaylar yüklenemedi.',
+    fAbout:'Hakkında', fContact:'İletişim', fPrivacy:'Gizlilik Politikası', fCookie:'Çerez Politikası',
+    replay:'↻ Açılış animasyonunu oynat',
+    copy:'© 2026 Dizify — Bu site bir tasarım projesidir, film/dizi verileri gösterim amaçlıdır.',
+    tvTag:'Dizi', seasons:'sezon', min:'dk'
+  },
+  en:{
+    navHome:'Home', navMovies:'Movies', navCats:'Categories',
+    searchPh:'Search movies or TV shows...',
+    heroTag:'Movie of the Week', watch:'▶ Watch', trailerBtn:'Trailer',
+    seeAll:'See All →', back:'← Back to Home',
+    noResults:'No results found.', loadFail:'Failed to load.',
+    heroFail:'Could not load the movie of the week.', searchFail:'Search failed.',
+    playTrailer:'▶ Play Trailer', whereWatch:'Where to watch? (Türkiye)',
+    noProvider:'No subscription streaming platform found in Türkiye.',
+    jw:'Streaming data provided by JustWatch.',
+    noOverview:'No overview available.', detailFail:'Could not load details.',
+    fAbout:'About', fContact:'Contact', fPrivacy:'Privacy Policy', fCookie:'Cookie Policy',
+    replay:'↻ Play opening animation',
+    copy:'© 2026 Dizify — This site is a design project; movie/TV data is for display purposes.',
+    tvTag:'TV', seasons:'seasons', min:'min'
+  }
+};
+const t = k => UI[L()][k];
+
+function applyUI(){
+  const set = (id, key) => { const el = document.getElementById(id); if(el) el.textContent = t(key); };
+  set('navHome','navHome'); set('navMovies','navMovies'); set('navCats','navCats');
+  set('backBtn','back'); set('replayBtn','replay'); set('copyText','copy');
+  set('fAbout','fAbout'); set('fContact','fContact'); set('fPrivacy','fPrivacy'); set('fCookie','fCookie');
+  document.getElementById('searchInput').placeholder = t('searchPh');
+}
+
+/* Tür sıraları: PDF'teki bölümler (iki dilli başlıklar) */
 const ROWS = [
-  { id:'trend',   title:'Şu An Trend',       path:'/trending/movie/week', params:{} },
-  { id:'dizi',    title:'Popüler Diziler',   path:'/tv/popular',          params:{}, type:'tv' },
-  { id:'aksiyon', title:'Aksiyon & Macera',  path:'/discover/movie', params:{with_genres:'28,12', sort_by:'popularity.desc'} },
-  { id:'bilim',   title:'Bilim Kurgu',       path:'/discover/movie', params:{with_genres:'878',   sort_by:'popularity.desc'} },
-  { id:'dram',    title:'Dram',              path:'/discover/movie', params:{with_genres:'18',    sort_by:'popularity.desc'} },
-  { id:'gerilim', title:'Gerilim & Korku',   path:'/discover/movie', params:{with_genres:'53,27', sort_by:'popularity.desc'} },
-  { id:'komedi',  title:'Komedi',            path:'/discover/movie', params:{with_genres:'35',    sort_by:'popularity.desc'} },
+  { id:'trend',   title:{tr:'Şu An Trend', en:'Trending Now'},            path:'/trending/movie/week', params:{} },
+  { id:'dizi',    title:{tr:'Popüler Diziler', en:'Popular TV Shows'},    path:'/tv/popular', params:{}, type:'tv' },
+  { id:'aksiyon', title:{tr:'Aksiyon & Macera', en:'Action & Adventure'}, path:'/discover/movie', params:{with_genres:'28,12', sort_by:'popularity.desc'} },
+  { id:'bilim',   title:{tr:'Bilim Kurgu', en:'Sci-Fi'},                  path:'/discover/movie', params:{with_genres:'878',   sort_by:'popularity.desc'} },
+  { id:'dram',    title:{tr:'Dram', en:'Drama'},                          path:'/discover/movie', params:{with_genres:'18',    sort_by:'popularity.desc'} },
+  { id:'gerilim', title:{tr:'Gerilim & Korku', en:'Thriller & Horror'},   path:'/discover/movie', params:{with_genres:'53,27', sort_by:'popularity.desc'} },
+  { id:'komedi',  title:{tr:'Komedi', en:'Comedy'},                       path:'/discover/movie', params:{with_genres:'35',    sort_by:'popularity.desc'} },
 ];
 
 /* ================= INTRO ================= */
@@ -699,22 +748,31 @@ async function tmdb(path, params = {}){
   return res.json();
 }
 const esc = s => String(s).replace(/'/g, "\\'");
+const escHTML = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+  .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 
-const GENRE_TR = {28:'Aksiyon',12:'Macera',16:'Animasyon',35:'Komedi',80:'Suç',99:'Belgesel',
-  18:'Dram',10751:'Aile',14:'Fantastik',36:'Tarih',27:'Korku',10402:'Müzik',9648:'Gizem',
-  10749:'Romantik',878:'Bilim Kurgu',53:'Gerilim',10752:'Savaş',37:'Western',
-  10759:'Aksiyon & Macera',10765:'Bilim Kurgu & Fantazi',10764:'Reality',10767:'Talk Show',
-  10766:'Pembe Dizi',10768:'Savaş & Politik',10762:'Çocuk',10763:'Haber'};
+const GENRES = {
+  tr:{28:'Aksiyon',12:'Macera',16:'Animasyon',35:'Komedi',80:'Suç',99:'Belgesel',
+    18:'Dram',10751:'Aile',14:'Fantastik',36:'Tarih',27:'Korku',10402:'Müzik',9648:'Gizem',
+    10749:'Romantik',878:'Bilim Kurgu',53:'Gerilim',10752:'Savaş',37:'Western',
+    10759:'Aksiyon & Macera',10765:'Bilim Kurgu & Fantazi',10764:'Reality',10767:'Talk Show',
+    10766:'Pembe Dizi',10768:'Savaş & Politik',10762:'Çocuk',10763:'Haber'},
+  en:{28:'Action',12:'Adventure',16:'Animation',35:'Comedy',80:'Crime',99:'Documentary',
+    18:'Drama',10751:'Family',14:'Fantasy',36:'History',27:'Horror',10402:'Music',9648:'Mystery',
+    10749:'Romance',878:'Sci-Fi',53:'Thriller',10752:'War',37:'Western',
+    10759:'Action & Adventure',10765:'Sci-Fi & Fantasy',10764:'Reality',10767:'Talk Show',
+    10766:'Soap',10768:'War & Politics',10762:'Kids',10763:'News'}
+};
 
 function cardHTML(item, forcedType){
   const isTV = forcedType === 'tv' || item.media_type === 'tv' || (!item.title && item.name);
   const type = isTV ? 'tv' : 'movie';
-  const title = item.title || item.name || 'İsimsiz';
+  const title = escHTML(item.title || item.name || '—');
   const year = (item.release_date || item.first_air_date || '').slice(0, 4);
-  const genre = item.genre_ids && item.genre_ids.length ? (GENRE_TR[item.genre_ids[0]] || '') : '';
+  const genre = item.genre_ids && item.genre_ids.length ? (GENRES[L()][item.genre_ids[0]] || '') : '';
   const rating = item.vote_average ? item.vote_average.toFixed(1) : '—';
   const poster = item.poster_path
-    ? `<img loading="lazy" src="${IMG}/w342${item.poster_path}" alt="${title} afişi">`
+    ? `<img loading="lazy" src="${IMG}/w342${item.poster_path}" alt="${title}">`
     : `<div class="noposter">${title}</div>`;
   return `
     <div class="card" onclick="openDetail(${item.id}, '${type}')">
@@ -723,7 +781,7 @@ function cardHTML(item, forcedType){
       <div class="shade"></div>
       <div class="caption">
         <div class="title">${title}</div>
-        <div class="sub">${year}${genre ? ' · ' + genre : (isTV ? ' · Dizi' : '')}</div>
+        <div class="sub">${year}${genre ? ' · ' + genre : (isTV ? ' · ' + t('tvTag') : '')}</div>
       </div>
     </div>`;
 }
@@ -742,21 +800,21 @@ async function loadHero(){
     const year = (detail.release_date || '').slice(0, 4);
     const genres = (detail.genres || []).slice(0, 2).map(g => g.name).join(' · ');
     el.innerHTML = `
-      <span class="hero-tag">Haftanın Filmi</span>
-      <h1>${detail.title}</h1>
+      <span class="hero-tag">${t('heroTag')}</span>
+      <h1>${escHTML(detail.title)}</h1>
       <div class="hero-meta">
         <span class="rating">★ ${detail.vote_average ? detail.vote_average.toFixed(1) : '—'}</span>
         <span>${year}</span>
-        ${detail.runtime ? `<span>${detail.runtime} dk</span>` : ''}
-        ${genres ? `<span class="pill">${genres}</span>` : ''}
+        ${detail.runtime ? `<span>${detail.runtime} ${t('min')}</span>` : ''}
+        ${genres ? `<span class="pill">${escHTML(genres)}</span>` : ''}
       </div>
-      <p class="hero-overview">${detail.overview || ''}</p>
+      <p class="hero-overview">${escHTML(detail.overview || '')}</p>
       <div class="hero-actions">
-        <button class="btn-primary" onclick="openDetail(${detail.id}, 'movie')">▶ İzle</button>
-        <button class="btn-ghost" onclick="openDetail(${detail.id}, 'movie', true)">Fragman</button>
+        <button class="btn-primary" onclick="openDetail(${detail.id}, 'movie')">${t('watch')}</button>
+        <button class="btn-ghost" onclick="openDetail(${detail.id}, 'movie', true)">${t('trailerBtn')}</button>
       </div>`;
   }catch(err){
-    el.innerHTML = '<div class="status error">Haftanın filmi yüklenemedi.</div>';
+    el.innerHTML = `<div class="status error">${t('heroFail')}</div>`;
     console.error(err);
   }
 }
@@ -767,8 +825,8 @@ async function loadRows(){
   main.innerHTML = ROWS.map(r => `
     <section class="row-section" id="row-${r.id}">
       <div class="row-head">
-        <h2>${r.title}</h2>
-        <a onclick="showAll('${r.id}')">Tümünü Gör →</a>
+        <h2>${r.title[L()]}</h2>
+        <a onclick="showAll('${r.id}')">${t('seeAll')}</a>
       </div>
       <div class="row" id="items-${r.id}"><div class="loader"></div></div>
     </section>`).join('');
@@ -780,7 +838,7 @@ async function loadRows(){
         data.results.slice(0, 15).map(item => cardHTML(item, r.type)).join('');
     }catch(err){
       document.getElementById('items-' + r.id).innerHTML =
-        '<div class="status error">Yüklenemedi.</div>';
+        `<div class="status error">${t('loadFail')}</div>`;
       console.error(err);
     }
   }
@@ -795,7 +853,7 @@ async function showAll(rowId){
   document.querySelector('.ad-strip').style.display = 'none';
   const gs = document.getElementById('gridSection');
   gs.style.display = 'block';
-  document.getElementById('gridTitle').textContent = r.title;
+  document.getElementById('gridTitle').textContent = r.title[L()];
   const grid = document.getElementById('gridItems');
   const status = document.getElementById('gridStatus');
   grid.innerHTML = ''; status.innerHTML = '<div class="loader"></div>';
@@ -808,18 +866,20 @@ async function showAll(rowId){
     grid.innerHTML = items.map(item => cardHTML(item, r.type)).join('');
     status.innerHTML = '';
   }catch(err){
-    status.innerHTML = '<div class="status error">Yüklenemedi.</div>';
+    status.innerHTML = `<div class="status error">${t('loadFail')}</div>`;
     console.error(err);
   }
   window.scrollTo({top:0});
 }
 
-function goHome(){
+function goHome(keepScroll){
   document.getElementById('gridSection').style.display = 'none';
   document.getElementById('homeSection').style.display = 'block';
   document.getElementById('hero').style.display = 'flex';
   document.querySelector('.ad-strip').style.display = 'block';
-  document.getElementById('searchInput').value = '';
+  // Aramayı sadece kullanıcı ana sayfaya bilerek döndüğünde temizle
+  if(document.activeElement !== searchInput) searchInput.value = '';
+  if(!keepScroll) window.scrollTo({top:0, behavior:'smooth'});
 }
 
 /* ================= ARAMA ================= */
@@ -828,8 +888,18 @@ const searchInput = document.getElementById('searchInput');
 searchInput.addEventListener('input', () => {
   clearTimeout(searchTimer);
   const q = searchInput.value.trim();
-  if(q.length < 2){ goHome(); return; }
+  if(q.length < 2){
+    // Kutu boşalınca ana görünüme dön ama yazmayı engelleme
+    if(q.length === 0) goHome(true);
+    return;
+  }
   searchTimer = setTimeout(() => doSearch(q), 400);
+});
+searchInput.addEventListener('keydown', e => {
+  if(e.key === 'Enter'){
+    const q = searchInput.value.trim();
+    if(q.length >= 2){ clearTimeout(searchTimer); doSearch(q); }
+  }
 });
 
 async function doSearch(q){
@@ -838,21 +908,23 @@ async function doSearch(q){
   document.querySelector('.ad-strip').style.display = 'none';
   const gs = document.getElementById('gridSection');
   gs.style.display = 'block';
-  document.getElementById('gridTitle').textContent = `"${q}" için sonuçlar`;
+  document.getElementById('gridTitle').textContent =
+    L() === 'tr' ? `"${q}" için sonuçlar` : `Results for "${q}"`;
   const grid = document.getElementById('gridItems');
   const status = document.getElementById('gridStatus');
   grid.innerHTML = ''; status.innerHTML = '<div class="loader"></div>';
+  window.scrollTo({top:0});
   try{
     const data = await tmdb('/search/multi', { query:q });
     const items = data.results.filter(x => x.media_type === 'movie' || x.media_type === 'tv');
     if(items.length === 0){
-      status.innerHTML = '<div class="status">Sonuç bulunamadı.</div>';
+      status.innerHTML = `<div class="status">${t('noResults')}</div>`;
     }else{
       grid.innerHTML = items.map(item => cardHTML(item)).join('');
       status.innerHTML = '';
     }
   }catch(err){
-    status.innerHTML = '<div class="status error">Arama başarısız oldu.</div>';
+    status.innerHTML = `<div class="status error">${t('searchFail')}</div>`;
     console.error(err);
   }
 }
@@ -862,7 +934,7 @@ function setLang(l){
   LANG = l;
   document.getElementById('langTR').classList.toggle('active', l === 'tr-TR');
   document.getElementById('langEN').classList.toggle('active', l === 'en-US');
-  goHome(); loadHero(); loadRows();
+  applyUI(); goHome(); loadHero(); loadRows();
 }
 
 /* ================= DETAY MODALI ================= */
@@ -878,10 +950,10 @@ async function openDetail(id, type, autoTrailer = false){
       append_to_response:'videos,watch/providers',
       include_video_language:'tr,en,null'
     });
-    const title = data.title || data.name;
+    const title = escHTML(data.title || data.name || '');
     const year = (data.release_date || data.first_air_date || '').slice(0, 4);
-    const runtime = data.runtime ? `${data.runtime} dk`
-      : (data.number_of_seasons ? `${data.number_of_seasons} sezon` : '');
+    const runtime = data.runtime ? `${data.runtime} ${t('min')}`
+      : (data.number_of_seasons ? `${data.number_of_seasons} ${t('seasons')}` : '');
     const genres = (data.genres || []).map(g => g.name).join(', ');
     const rating = data.vote_average ? data.vote_average.toFixed(1) : '—';
     const backdropImg = data.backdrop_path
@@ -889,7 +961,7 @@ async function openDetail(id, type, autoTrailer = false){
 
     const vids = (data.videos && data.videos.results) || [];
     const trailer =
-      vids.find(v => v.site === 'YouTube' && v.type === 'Trailer' && v.iso_639_1 === 'tr') ||
+      vids.find(v => v.site === 'YouTube' && v.type === 'Trailer' && v.iso_639_1 === L()) ||
       vids.find(v => v.site === 'YouTube' && v.type === 'Trailer') ||
       vids.find(v => v.site === 'YouTube');
 
@@ -898,9 +970,9 @@ async function openDetail(id, type, autoTrailer = false){
     const flatrate = prov && prov.flatrate ? prov.flatrate : [];
     const provHTML = flatrate.length
       ? flatrate.map(p =>
-          `<img src="${IMG}/w92${p.logo_path}" alt="${p.provider_name}" title="${p.provider_name}">`
+          `<img src="${IMG}/w92${p.logo_path}" alt="${escHTML(p.provider_name)}" title="${escHTML(p.provider_name)}">`
         ).join('')
-      : '<span class="none">Türkiye\'de abonelikle izlenebileceği bir platform bulunamadı.</span>';
+      : `<span class="none">${t('noProvider')}</span>`;
 
     modal.innerHTML = `
       <button class="close" onclick="closeDetail()" aria-label="Kapat">✕</button>
@@ -912,23 +984,23 @@ async function openDetail(id, type, autoTrailer = false){
           ${runtime ? `<span>${runtime}</span>` : ''}
           <span class="rating">★ ${rating}</span>
         </div>
-        ${genres ? `<div class="sub"><span>${genres}</span></div>` : ''}
-        <p class="overview">${data.overview || 'Özet bulunamadı.'}</p>
+        ${genres ? `<div class="sub"><span>${escHTML(genres)}</span></div>` : ''}
+        <p class="overview">${escHTML(data.overview || '') || t('noOverview')}</p>
         ${trailer ? `
-          <button class="btn-primary" onclick="playTrailer('${esc(trailer.key)}')">▶ Fragmanı İzle</button>
-          <iframe class="trailer-frame" id="trailerFrame" allow="autoplay; encrypted-media" allowfullscreen title="${title} fragman"></iframe>
+          <button class="btn-primary" onclick="playTrailer('${esc(trailer.key)}')">${t('playTrailer')}</button>
+          <iframe class="trailer-frame" id="trailerFrame" allow="autoplay; encrypted-media" allowfullscreen title="${title}"></iframe>
         ` : ''}
         <div class="providers">
-          <h3>Nerede izlenir? (Türkiye)</h3>
+          <h3>${t('whereWatch')}</h3>
           <div class="logos">${provHTML}</div>
-          <div class="jw">İzleme sağlayıcı verisi JustWatch tarafından sağlanır.</div>
+          <div class="jw">${t('jw')}</div>
         </div>
       </div>`;
     if(autoTrailer && trailer) playTrailer(trailer.key);
   }catch(err){
     modal.innerHTML = `
       <button class="close" onclick="closeDetail()" aria-label="Kapat">✕</button>
-      <div class="body"><div class="status error">Detaylar yüklenemedi.</div></div>`;
+      <div class="body"><div class="status error">${t('detailFail')}</div></div>`;
     console.error(err);
   }
 }
@@ -950,6 +1022,7 @@ backdrop.addEventListener('click', e => { if(e.target === backdrop) closeDetail(
 document.addEventListener('keydown', e => { if(e.key === 'Escape') closeDetail(); });
 
 /* ================= BAŞLAT ================= */
+applyUI();
 loadHero();
 loadRows();
 </script>
