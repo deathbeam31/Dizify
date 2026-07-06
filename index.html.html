@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dizify — Açılış Animasyonu v6 (Ateş + Çoğalma)</title>
+<style>
+  :root{
+    --bg:      #0D0805;
+    --bg-deep: #070402;
+    --flame:   #FF7A1A;
+    --amber:   #FFB33C;
+    --ember:   #FF3D1F;
+    --hot:     #FFD98F;
+    --text:    #FBF8F3;
+    --muted:   #A99A8C;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    background:var(--bg-deep);
+    font-family:"Segoe UI",system-ui,-apple-system,sans-serif;
+    overflow:hidden; color:var(--text);
+  }
+
+  /* ================= INTRO ================= */
+  .intro{
+    position:fixed; inset:0; z-index:50;
+    display:grid; place-items:center;
+    background:var(--bg-deep);
+    animation:intro-out .01s linear 4.4s forwards;
+  }
+  @keyframes intro-out{to{opacity:0; visibility:hidden}}
+
+  .aurora{position:absolute; inset:0; overflow:hidden; filter:blur(100px); opacity:.45}
+  .aurora i{position:absolute; border-radius:50%; mix-blend-mode:screen}
+  .aurora i:nth-child(1){width:50vw; height:50vw; left:-12%; top:-18%;
+    background:radial-gradient(circle, rgba(255,122,26,.5), transparent 70%);
+    animation:drift1 10s ease-in-out infinite alternate}
+  .aurora i:nth-child(2){width:42vw; height:42vw; right:-10%; bottom:-18%;
+    background:radial-gradient(circle, rgba(255,61,31,.4), transparent 70%);
+    animation:drift2 12s ease-in-out infinite alternate}
+  .aurora i:nth-child(3){width:30vw; height:30vw; left:38%; top:58%;
+    background:radial-gradient(circle, rgba(255,179,60,.35), transparent 70%);
+    animation:drift1 14s ease-in-out infinite alternate-reverse}
+  @keyframes drift1{from{transform:translate(0,0) scale(1)} to{transform:translate(6vw,4vh) scale(1.15)}}
+  @keyframes drift2{from{transform:translate(0,0) scale(1.1)} to{transform:translate(-5vw,-4vh) scale(1)}}
+
+  .grain{
+    position:absolute; inset:-100%;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    opacity:.05; pointer-events:none;
+    animation:grain-move .5s steps(4) infinite;
+  }
+  @keyframes grain-move{
+    0%{transform:translate(0,0)} 25%{transform:translate(-2%,3%)}
+    50%{transform:translate(3%,-2%)} 75%{transform:translate(-3%,-3%)}
+    100%{transform:translate(2%,2%)}
+  }
+
+  .stars{position:absolute; inset:0; overflow:hidden}
+  .stars i{
+    position:absolute; width:2px; height:2px; border-radius:50%;
+    background:#ffd9a8; opacity:0;
+    animation:twinkle 3s ease-in-out infinite;
+  }
+  @keyframes twinkle{
+    0%,100%{opacity:0; transform:scale(.5) translateY(0)}
+    50%{opacity:.6; transform:scale(1.2) translateY(-8px)}
+  }
+
+  .stage{position:relative; width:min(92vw,780px); aspect-ratio:19/9}
+  .stage svg{position:absolute; inset:0; width:100%; height:100%; overflow:visible}
+
+  /* --- ANA HİLALLER: belirir, enerji toplar, patlamaya karışır --- */
+  .crescent{opacity:0}
+  .crescent.left{
+    transform-origin:194px 180px;
+    filter:drop-shadow(0 0 16px rgba(255,122,26,.75)) drop-shadow(0 0 52px rgba(255,61,31,.35));
+    animation:cres-in-l .85s cubic-bezier(.34,1.56,.44,1) .25s forwards,
+              charge 1.5s ease-in 1.5s forwards,
+              cres-blast .3s cubic-bezier(.6,0,.9,.4) 3s forwards;
+  }
+  .crescent.right{
+    transform-origin:566px 180px;
+    filter:drop-shadow(0 0 16px rgba(255,179,60,.75)) drop-shadow(0 0 52px rgba(255,122,26,.35));
+    animation:cres-in-r .85s cubic-bezier(.34,1.56,.44,1) .25s forwards,
+              charge 1.5s ease-in 1.5s forwards,
+              cres-blast .3s cubic-bezier(.6,0,.9,.4) 3s forwards;
+  }
+  @keyframes cres-in-l{
+    from{opacity:0; transform:rotate(-120deg) scale(.4)}
+    to  {opacity:1; transform:rotate(0deg)    scale(1)}
+  }
+  @keyframes cres-in-r{
+    from{opacity:0; transform:rotate(120deg) scale(.4)}
+    to  {opacity:1; transform:rotate(0deg)   scale(1)}
+  }
+  /* enerji toplama: giderek daha parlak, hafif titreşim */
+  @keyframes charge{
+    0%  {filter:drop-shadow(0 0 16px rgba(255,122,26,.75)) drop-shadow(0 0 52px rgba(255,61,31,.35))}
+    60% {filter:drop-shadow(0 0 24px rgba(255,179,60,.9))  drop-shadow(0 0 70px rgba(255,122,26,.5))}
+    100%{filter:drop-shadow(0 0 34px rgba(255,217,143,1))  drop-shadow(0 0 95px rgba(255,122,26,.7))}
+  }
+  @keyframes cres-blast{
+    to{opacity:0; scale:1.6; filter:drop-shadow(0 0 60px rgba(255,217,143,1)) blur(6px)}
+  }
+
+  /* --- ÇOĞALAN HİLAL YANKILARI: üst üste büyüyerek yayılır --- */
+  .echo{
+    opacity:0;
+    transform-origin:380px 180px;
+    filter:drop-shadow(0 0 12px rgba(255,122,26,.5));
+  }
+  .echo.e1{animation:echo-out 1s  cubic-bezier(.2,.6,.4,1) 1.55s forwards}
+  .echo.e2{animation:echo-out .95s cubic-bezier(.2,.6,.4,1) 1.85s forwards}
+  .echo.e3{animation:echo-out .9s cubic-bezier(.2,.6,.4,1) 2.12s forwards}
+  .echo.e4{animation:echo-out .85s cubic-bezier(.2,.6,.4,1) 2.36s forwards}
+  .echo.e5{animation:echo-out .8s cubic-bezier(.2,.6,.4,1) 2.58s forwards}
+  .echo.e6{animation:echo-out .75s cubic-bezier(.2,.6,.4,1) 2.78s forwards}
+  @keyframes echo-out{
+    0%  {opacity:0;  transform:scale(1)}
+    18% {opacity:.75}
+    100%{opacity:0;  transform:scale(2.1)}
+  }
+
+  /* --- YAZI --- */
+  .wordmark{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center; gap:.02em;
+    font-size:clamp(3rem, 9vw, 5.8rem);
+    font-weight:800; letter-spacing:.07em;
+    animation:word-blast .35s cubic-bezier(.6,0,.9,.4) 2.95s forwards;
+  }
+  .wordmark span{
+    display:inline-block; opacity:0;
+    background:linear-gradient(110deg,
+      var(--text) 25%, var(--hot) 42%, var(--flame) 50%, var(--ember) 58%, var(--text) 75%);
+    background-size:280% 100%;
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:transparent;
+    animation:letter-in .5s cubic-bezier(.2,.9,.25,1.15) forwards,
+              shimmer 1.8s linear 1.6s infinite;
+  }
+  .wordmark span:nth-child(1){animation-delay:.9s,  1.6s}
+  .wordmark span:nth-child(2){animation-delay:.98s, 1.6s}
+  .wordmark span:nth-child(3){animation-delay:1.06s,1.6s}
+  .wordmark span:nth-child(4){animation-delay:1.14s,1.6s}
+  .wordmark span:nth-child(5){animation-delay:1.22s,1.6s}
+  .wordmark span:nth-child(6){animation-delay:1.3s, 1.6s}
+  @keyframes letter-in{
+    from{opacity:0; transform:translateY(26px) rotateX(60deg); filter:blur(8px)}
+    to  {opacity:1; transform:translateY(0)    rotateX(0);     filter:blur(0)}
+  }
+  @keyframes shimmer{
+    from{background-position:130% 0}
+    to  {background-position:-150% 0}
+  }
+  @keyframes word-blast{
+    to{opacity:0; transform:scale(1.5); filter:blur(16px); letter-spacing:.5em}
+  }
+
+  /* --- PATLAMA: yankılar zirveye ulaşınca --- */
+  .flash{
+    position:absolute; left:50%; top:50%;
+    width:40px; height:40px; margin:-20px 0 0 -20px;
+    border-radius:50%;
+    background:radial-gradient(circle, #fff 0%, rgba(255,217,143,.95) 22%, rgba(255,122,26,.8) 40%, rgba(255,61,31,.4) 58%, transparent 72%);
+    opacity:0; scale:0;
+    animation:flash .6s cubic-bezier(.2,.8,.3,1) 3.05s forwards;
+  }
+  @keyframes flash{
+    0%  {opacity:0; scale:0}
+    25% {opacity:1; scale:7}
+    100%{opacity:0; scale:16}
+  }
+  .spark{
+    position:absolute; left:50%; top:50%;
+    width:3px; height:70px; margin:-35px 0 0 -1.5px;
+    background:linear-gradient(180deg, var(--spark-c, var(--flame)), transparent);
+    border-radius:2px; opacity:0;
+    transform-origin:center;
+    animation:spark .75s cubic-bezier(.2,.8,.4,1) 3.1s forwards;
+  }
+  @keyframes spark{
+    0%  {opacity:0; transform:rotate(var(--r)) translateY(0)      scaleY(.3)}
+    20% {opacity:1}
+    100%{opacity:0; transform:rotate(var(--r)) translateY(-190px) scaleY(1.5)}
+  }
+  /* patlama şok dalgası halkası */
+  .shockwave{
+    position:absolute; left:50%; top:50%;
+    width:120px; height:120px; margin:-60px 0 0 -60px;
+    border-radius:50%; opacity:0;
+    border:3px solid rgba(255,217,143,.9);
+    box-shadow:0 0 30px rgba(255,122,26,.6), inset 0 0 20px rgba(255,122,26,.4);
+    animation:shock .8s cubic-bezier(.2,.7,.3,1) 3.1s forwards;
+  }
+  @keyframes shock{
+    0%  {opacity:0; scale:.3; border-width:6px}
+    15% {opacity:1}
+    100%{opacity:0; scale:12; border-width:1px}
+  }
+
+  /* ================= SİTE: patlamayla birlikte dairesel açılır ================= */
+  .site{
+    position:fixed; inset:0; z-index:40;
+    display:flex; flex-direction:column;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% -10%, rgba(255,122,26,.14), transparent),
+      radial-gradient(ellipse 60% 50% at 15% 110%, rgba(255,61,31,.1), transparent),
+      linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
+    clip-path:circle(0% at 50% 50%);
+    animation:site-reveal .95s cubic-bezier(.6,0,.3,1) 3.25s forwards;
+  }
+  @keyframes site-reveal{
+    from{clip-path:circle(0% at 50% 50%)}
+    to  {clip-path:circle(120% at 50% 50%)}
+  }
+
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:1rem clamp(1rem,5vw,3rem);
+    background:rgba(255,255,255,.03);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(255,255,255,.06);
+  }
+  .logo{display:flex; align-items:center; gap:.6rem; font-weight:800; font-size:1.3rem; letter-spacing:.05em}
+  .logo svg{width:34px; height:26px; filter:drop-shadow(0 0 8px rgba(255,122,26,.55))}
+  .nav a{color:var(--muted); text-decoration:none; margin-left:1.4rem; font-size:.95rem; transition:color .2s}
+  .nav a:hover,.nav a:focus-visible{color:var(--text)}
+  .nav a:focus-visible{outline:2px solid var(--flame); outline-offset:4px; border-radius:4px}
+
+  .hero{flex:1; display:grid; place-items:center; text-align:center; padding:1rem}
+  .hero h1{font-size:clamp(1.8rem,5vw,3.2rem); font-weight:800; margin-bottom:.8rem}
+  .hero h1 em{
+    font-style:normal;
+    background:linear-gradient(90deg, var(--ember), var(--flame), var(--amber));
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:transparent;
+  }
+  .hero p{color:var(--muted); max-width:34rem; margin:0 auto 1.6rem; line-height:1.6}
+  .btn{
+    display:inline-block; padding:.9rem 2.3rem; border-radius:999px;
+    background:linear-gradient(120deg, var(--ember), var(--flame) 55%, var(--amber));
+    color:#fff; font-weight:700; text-decoration:none;
+    box-shadow:0 8px 30px rgba(255,122,26,.4), 0 2px 10px rgba(255,61,31,.3);
+    transition:transform .2s, box-shadow .2s, filter .2s;
+  }
+  .btn:hover{transform:translateY(-2px); filter:brightness(1.08);
+    box-shadow:0 12px 40px rgba(255,122,26,.55), 0 4px 14px rgba(255,61,31,.4)}
+  .btn:focus-visible{outline:3px solid var(--hot); outline-offset:3px}
+
+  .replay{
+    position:fixed; right:1.2rem; bottom:1.2rem; z-index:60;
+    background:rgba(255,255,255,.04); backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.12);
+    color:var(--muted); border-radius:999px;
+    padding:.5rem 1.1rem; font-size:.85rem; cursor:pointer;
+    opacity:0; animation:replay-in .5s ease 4.5s forwards;
+    transition:color .2s, border-color .2s;
+  }
+  @keyframes replay-in{to{opacity:1}}
+  .replay:hover{color:var(--text); border-color:var(--flame)}
+
+  @media (prefers-reduced-motion: reduce){
+    .intro{display:none}
+    .site{clip-path:none; animation:none}
+    .replay{opacity:1; animation:none}
+    .aurora i,.grain{animation:none}
+  }
+</style>
+</head>
+<body>
+
+  <!-- ============ AÇILIŞ ANİMASYONU ============ -->
+  <div class="intro" id="intro" aria-hidden="true">
+    <div class="aurora"><i></i><i></i><i></i></div>
+    <div class="stars" id="stars"></div>
+    <div class="grain"></div>
+
+    <div class="stage">
+      <svg viewBox="0 0 760 360" role="img" aria-label="Dizify açılış animasyonu">
+        <defs>
+          <linearGradient id="gradL" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%"  stop-color="#FFD98F"/>
+            <stop offset="55%" stop-color="#FF9A2E"/>
+            <stop offset="100%" stop-color="#FF7A1A"/>
+          </linearGradient>
+          <linearGradient id="gradR" x1="1" y1="0" x2="0" y2="1">
+            <stop offset="0%"  stop-color="#FFB33C"/>
+            <stop offset="55%" stop-color="#FF7A1A"/>
+            <stop offset="100%" stop-color="#FF3D1F"/>
+          </linearGradient>
+          <mask id="cutL">
+            <rect x="-100" y="-100" width="960" height="560" fill="#fff"/>
+            <circle cx="222" cy="180" r="86" fill="#000"/>
+          </mask>
+          <mask id="cutR">
+            <rect x="-100" y="-100" width="960" height="560" fill="#fff"/>
+            <circle cx="538" cy="180" r="86" fill="#000"/>
+          </mask>
+          <!-- Yankılar için hilal çifti şablonu -->
+          <g id="pair">
+            <circle cx="194" cy="180" r="96" fill="url(#gradL)" mask="url(#cutL)"/>
+            <circle cx="566" cy="180" r="96" fill="url(#gradR)" mask="url(#cutR)"/>
+          </g>
+        </defs>
+
+        <!-- Üst üste çoğalan hilal yankıları (arkadan öne) -->
+        <use href="#pair" class="echo e1"/>
+        <use href="#pair" class="echo e2"/>
+        <use href="#pair" class="echo e3"/>
+        <use href="#pair" class="echo e4"/>
+        <use href="#pair" class="echo e5"/>
+        <use href="#pair" class="echo e6"/>
+
+        <!-- Ana hilaller -->
+        <g class="crescent left">
+          <circle cx="194" cy="180" r="96" fill="url(#gradL)" mask="url(#cutL)"/>
+        </g>
+        <g class="crescent right">
+          <circle cx="566" cy="180" r="96" fill="url(#gradR)" mask="url(#cutR)"/>
+        </g>
+      </svg>
+
+      <div class="wordmark" aria-hidden="true">
+        <span>D</span><span>i</span><span>z</span><span>i</span><span>f</span><span>y</span>
+      </div>
+
+      <div class="flash"></div>
+      <div class="shockwave"></div>
+      <i class="spark" style="--r:0deg;   --spark-c:#FF7A1A"></i>
+      <i class="spark" style="--r:30deg;  --spark-c:#FFB33C"></i>
+      <i class="spark" style="--r:60deg;  --spark-c:#FF3D1F"></i>
+      <i class="spark" style="--r:90deg;  --spark-c:#FFD98F"></i>
+      <i class="spark" style="--r:120deg; --spark-c:#FF7A1A"></i>
+      <i class="spark" style="--r:150deg; --spark-c:#FFB33C"></i>
+      <i class="spark" style="--r:180deg; --spark-c:#FF3D1F"></i>
+      <i class="spark" style="--r:210deg; --spark-c:#FFD98F"></i>
+      <i class="spark" style="--r:240deg; --spark-c:#FF7A1A"></i>
+      <i class="spark" style="--r:270deg; --spark-c:#FFB33C"></i>
+      <i class="spark" style="--r:300deg; --spark-c:#FF3D1F"></i>
+      <i class="spark" style="--r:330deg; --spark-c:#FFD98F"></i>
+    </div>
+  </div>
+
+  <!-- ============ SİTE İÇERİĞİ ============ -->
+  <div class="site">
+    <nav class="nav">
+      <div class="logo">
+        <svg viewBox="0 0 52 40" aria-hidden="true">
+          <defs>
+            <linearGradient id="lgL" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#FFD98F"/><stop offset="100%" stop-color="#FF7A1A"/>
+            </linearGradient>
+            <linearGradient id="lgR" x1="1" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#FFB33C"/><stop offset="100%" stop-color="#FF3D1F"/>
+            </linearGradient>
+            <mask id="lmL"><rect width="52" height="40" fill="#fff"/><circle cx="19" cy="20" r="11.5" fill="#000"/></mask>
+            <mask id="lmR"><rect width="52" height="40" fill="#fff"/><circle cx="33" cy="20" r="11.5" fill="#000"/></mask>
+          </defs>
+          <circle cx="15" cy="20" r="13" fill="url(#lgL)" mask="url(#lmL)"/>
+          <circle cx="37" cy="20" r="13" fill="url(#lgR)" mask="url(#lmR)"/>
+        </svg>
+        Dizify
+      </div>
+      <div>
+        <a href="#">Diziler</a>
+        <a href="#">Filmler</a>
+        <a href="#">Listem</a>
+      </div>
+    </nav>
+    <main class="hero">
+      <div>
+        <h1>Ateşi yak. <em>Dizify</em> başlıyor.</h1>
+        <p>Buraya sitenin gerçek içeriği gelecek — patlamayla birlikte bu ekran dairesel bir geçişle açılıyor.</p>
+        <a class="btn" href="#">Keşfetmeye Başla</a>
+      </div>
+    </main>
+  </div>
+
+  <button class="replay" onclick="location.reload()">↻ Animasyonu tekrar oynat</button>
+
+  <script>
+    const stars = document.getElementById('stars');
+    for(let i = 0; i < 60; i++){
+      const s = document.createElement('i');
+      s.style.left = Math.random() * 100 + '%';
+      s.style.top = Math.random() * 100 + '%';
+      s.style.animationDelay = (Math.random() * 3) + 's';
+      s.style.animationDuration = (2 + Math.random() * 3) + 's';
+      s.style.width = s.style.height = (1 + Math.random() * 2) + 'px';
+      stars.appendChild(s);
+    }
+  </script>
+
+</body>
+</html>
