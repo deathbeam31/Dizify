@@ -433,6 +433,11 @@
     margin-top:1rem; display:none; background:#000;
   }
   .trailer-frame.show{display:block}
+  .yt-link{
+    display:block; margin-top:.6rem;
+    color:var(--muted); font-size:.8rem; text-decoration:none;
+  }
+  .yt-link:hover{color:var(--amber); text-decoration:underline}
   .providers{margin-top:1.3rem}
   .providers h3{font-size:.92rem; font-weight:700; margin-bottom:.6rem; color:var(--hot)}
   .providers .logos{display:flex; gap:.6rem; flex-wrap:wrap}
@@ -564,6 +569,7 @@
       <div class="nav-links">
         <a id="navHome" onclick="goHome()">Ana Sayfa</a>
         <a id="navMovies" href="#row-trend" onclick="goHome(true)">Filmler</a>
+        <a id="navSeries" href="#row-dizi" onclick="goHome(true)">Diziler</a>
         <a id="navCats" href="#row-aksiyon" onclick="goHome(true)">Kategoriler</a>
       </div>
       <div class="searchbox">
@@ -651,7 +657,7 @@ const L = () => LANG.startsWith('tr') ? 'tr' : 'en';
 /* ================= ARAYÜZ ÇEVİRİLERİ ================= */
 const UI = {
   tr:{
-    navHome:'Ana Sayfa', navMovies:'Filmler', navCats:'Kategoriler',
+    navHome:'Ana Sayfa', navMovies:'Filmler', navSeries:'Diziler', navCats:'Kategoriler',
     searchPh:'Film veya dizi ara...',
     heroTag:'Haftanın Filmi', watch:'▶ İzle', trailerBtn:'Fragman',
     seeAll:'Tümünü Gör →', back:'← Ana Sayfaya Dön',
@@ -661,13 +667,14 @@ const UI = {
     noProvider:"Türkiye'de abonelikle izlenebileceği bir platform bulunamadı.",
     jw:'İzleme sağlayıcı verisi JustWatch tarafından sağlanır.',
     noOverview:'Özet bulunamadı.', detailFail:'Detaylar yüklenemedi.',
+    watchOnYt:"Oynatıcı açılmazsa YouTube'da izle ↗",
     fAbout:'Hakkında', fContact:'İletişim', fPrivacy:'Gizlilik Politikası', fCookie:'Çerez Politikası',
     replay:'↻ Açılış animasyonunu oynat',
     copy:'© 2026 Dizify — Bu site bir tasarım projesidir, film/dizi verileri gösterim amaçlıdır.',
     tvTag:'Dizi', seasons:'sezon', min:'dk'
   },
   en:{
-    navHome:'Home', navMovies:'Movies', navCats:'Categories',
+    navHome:'Home', navMovies:'Movies', navSeries:'TV Shows', navCats:'Categories',
     searchPh:'Search movies or TV shows...',
     heroTag:'Movie of the Week', watch:'▶ Watch', trailerBtn:'Trailer',
     seeAll:'See All →', back:'← Back to Home',
@@ -677,6 +684,7 @@ const UI = {
     noProvider:'No subscription streaming platform found in Türkiye.',
     jw:'Streaming data provided by JustWatch.',
     noOverview:'No overview available.', detailFail:'Could not load details.',
+    watchOnYt:"If the player doesn't load, watch on YouTube ↗",
     fAbout:'About', fContact:'Contact', fPrivacy:'Privacy Policy', fCookie:'Cookie Policy',
     replay:'↻ Play opening animation',
     copy:'© 2026 Dizify — This site is a design project; movie/TV data is for display purposes.',
@@ -687,7 +695,7 @@ const t = k => UI[L()][k];
 
 function applyUI(){
   const set = (id, key) => { const el = document.getElementById(id); if(el) el.textContent = t(key); };
-  set('navHome','navHome'); set('navMovies','navMovies'); set('navCats','navCats');
+  set('navHome','navHome'); set('navMovies','navMovies'); set('navSeries','navSeries'); set('navCats','navCats');
   set('backBtn','back'); set('replayBtn','replay'); set('copyText','copy');
   set('fAbout','fAbout'); set('fContact','fContact'); set('fPrivacy','fPrivacy'); set('fCookie','fCookie');
   document.getElementById('searchInput').placeholder = t('searchPh');
@@ -696,7 +704,9 @@ function applyUI(){
 /* Tür sıraları: PDF'teki bölümler (iki dilli başlıklar) */
 const ROWS = [
   { id:'trend',   title:{tr:'Şu An Trend', en:'Trending Now'},            path:'/trending/movie/week', params:{} },
+  { id:'trfilm',  title:{tr:'Türk Filmleri', en:'Turkish Movies'},        path:'/discover/movie', params:{with_original_language:'tr', sort_by:'popularity.desc'} },
   { id:'dizi',    title:{tr:'Popüler Diziler', en:'Popular TV Shows'},    path:'/tv/popular', params:{}, type:'tv' },
+  { id:'trdizi',  title:{tr:'Türk Dizileri', en:'Turkish TV Shows'},      path:'/discover/tv', params:{with_original_language:'tr', sort_by:'popularity.desc'}, type:'tv' },
   { id:'aksiyon', title:{tr:'Aksiyon & Macera', en:'Action & Adventure'}, path:'/discover/movie', params:{with_genres:'28,12', sort_by:'popularity.desc'} },
   { id:'bilim',   title:{tr:'Bilim Kurgu', en:'Sci-Fi'},                  path:'/discover/movie', params:{with_genres:'878',   sort_by:'popularity.desc'} },
   { id:'dram',    title:{tr:'Dram', en:'Drama'},                          path:'/discover/movie', params:{with_genres:'18',    sort_by:'popularity.desc'} },
@@ -988,6 +998,7 @@ async function openDetail(id, type, autoTrailer = false){
         <p class="overview">${escHTML(data.overview || '') || t('noOverview')}</p>
         ${trailer ? `
           <button class="btn-primary" onclick="playTrailer('${esc(trailer.key)}')">${t('playTrailer')}</button>
+          <a class="yt-link" href="https://www.youtube.com/watch?v=${esc(trailer.key)}" target="_blank" rel="noopener">${t('watchOnYt')}</a>
           <iframe class="trailer-frame" id="trailerFrame" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="${title}"></iframe>
         ` : ''}
         <div class="providers">
@@ -1008,7 +1019,7 @@ async function openDetail(id, type, autoTrailer = false){
 function playTrailer(key){
   const frame = document.getElementById('trailerFrame');
   if(!frame) return;
-  frame.src = `https://www.youtube-nocookie.com/embed/${key}?autoplay=1&rel=0&origin=${encodeURIComponent(location.origin)}`;
+  frame.src = `https://www.youtube.com/embed/${key}?autoplay=1&rel=0&playsinline=1`;
   frame.classList.add('show');
   frame.scrollIntoView({behavior:'smooth', block:'center'});
 }
