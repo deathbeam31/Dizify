@@ -40,8 +40,8 @@
   .intro.skip{display:none}
   @keyframes intro-out{to{opacity:0; visibility:hidden}}
 
-  .aurora{position:absolute; inset:0; overflow:hidden; filter:blur(100px); opacity:.45}
-  .aurora i{position:absolute; border-radius:50%; mix-blend-mode:screen}
+  .aurora{position:absolute; inset:0; overflow:hidden; opacity:.4}
+  .aurora i{position:absolute; border-radius:50%; mix-blend-mode:screen; will-change:transform}
   .aurora i:nth-child(1){width:50vw; height:50vw; left:-12%; top:-18%;
     background:radial-gradient(circle, rgba(255,122,26,.5), transparent 70%);
     animation:drift1 10s ease-in-out infinite alternate}
@@ -55,9 +55,9 @@
   @keyframes drift2{from{transform:translate(0,0) scale(1.1)} to{transform:translate(-5vw,-4vh) scale(1)}}
 
   .grain{
-    position:absolute; inset:-100%;
+    position:absolute; inset:-50%;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
-    opacity:.05; pointer-events:none;
+    opacity:.05; pointer-events:none; will-change:transform;
     animation:grain-move .5s steps(4) infinite;
   }
   @keyframes grain-move{
@@ -110,8 +110,7 @@
   @keyframes cres-blast{to{opacity:0; scale:1.6}}
 
   .echo{
-    opacity:0; transform-origin:380px 180px;
-    filter:drop-shadow(0 0 12px rgba(255,122,26,.5));
+    opacity:0; transform-origin:380px 180px; will-change:transform,opacity;
   }
   .echo.e1{animation:echo-out 1s   cubic-bezier(.2,.6,.4,1) 1.55s forwards}
   .echo.e2{animation:echo-out .95s cubic-bezier(.2,.6,.4,1) 1.85s forwards}
@@ -201,7 +200,7 @@
     padding:.8rem clamp(1rem,4vw,3rem);
     background:linear-gradient(180deg, rgba(10,5,3,.92), rgba(10,5,3,.6) 80%, transparent);
   }
-  .nav.scrolled{background:rgba(10,5,3,.92); backdrop-filter:blur(14px);
+  .nav.scrolled{background:rgba(10,5,3,.94); backdrop-filter:blur(8px);
     border-bottom:1px solid rgba(255,255,255,.06)}
   .logo{display:flex; align-items:center; gap:.5rem; font-weight:800; font-size:1.15rem;
     letter-spacing:.04em; cursor:pointer; flex-shrink:0}
@@ -339,11 +338,11 @@
     border-radius:12px; overflow:hidden; cursor:pointer;
     background:var(--panel);
     border:1px solid rgba(255,255,255,.05);
-    transition:transform .25s, box-shadow .25s, border-color .25s;
+    transition:transform .25s, border-color .25s;
+    will-change:transform;
   }
   .card:hover{
     transform:translateY(-5px) scale(1.03);
-    box-shadow:0 14px 34px rgba(255,122,26,.28);
     border-color:rgba(255,122,26,.45);
   }
   .card img{width:100%; aspect-ratio:2/3; object-fit:cover; display:block; background:#221408}
@@ -716,7 +715,7 @@ const ROWS = [
 
 /* ================= INTRO ================= */
 const stars = document.getElementById('stars');
-for(let i = 0; i < 60; i++){
+for(let i = 0; i < 36; i++){
   const s = document.createElement('i');
   s.style.left = Math.random() * 100 + '%';
   s.style.top = Math.random() * 100 + '%';
@@ -727,7 +726,7 @@ for(let i = 0; i < 60; i++){
 }
 // Intro oturum başına bir kez oynar
 if(sessionStorage.getItem('dizifyIntroSeen')){
-  document.getElementById('intro').classList.add('skip');
+  document.getElementById('intro').remove();
   document.getElementById('site').classList.add('revealed');
   document.body.classList.remove('intro-active');
 }else{
@@ -735,6 +734,8 @@ if(sessionStorage.getItem('dizifyIntroSeen')){
     document.body.classList.remove('intro-active');
     document.getElementById('site').classList.add('revealed');
     sessionStorage.setItem('dizifyIntroSeen', '1');
+    // Intro'yu tamamen kaldır: gizli kalan animasyonlar kaynak tüketmesin
+    setTimeout(() => document.getElementById('intro').remove(), 300);
   }, 4400);
 }
 function replayIntro(){
@@ -742,10 +743,16 @@ function replayIntro(){
   location.reload();
 }
 
-/* Nav: kaydırınca koyulaşır */
+/* Nav: kaydırınca koyulaşır (rAF ile tek kare senkronu) */
+let navTick = false;
 window.addEventListener('scroll', () => {
-  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
-});
+  if(navTick) return;
+  navTick = true;
+  requestAnimationFrame(() => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+    navTick = false;
+  });
+}, {passive:true});
 
 /* ================= YARDIMCILAR ================= */
 async function tmdb(path, params = {}){
