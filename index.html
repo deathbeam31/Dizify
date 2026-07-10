@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="FilmArşivi — güncel filmleri ve dizileri keşfet: vizyondakiler, trendler, fragmanlar ve nerede izleyebileceğin tek yerde.">
+<meta name="theme-color" content="#0E0E10">
+<meta property="og:title" content="FilmArşivi — Film & Dizi Keşfi">
+<meta property="og:description" content="Güncel filmler, diziler, fragmanlar ve izleme platformları.">
+<meta property="og:type" content="website">
 <title>FilmArşivi — Film & Dizi Keşfi</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='a' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%23C50811'/><stop offset='1' stop-color='%2399050D'/></linearGradient><linearGradient id='b' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%23FF2A33'/><stop offset='1' stop-color='%23E50914'/></linearGradient></defs><g transform='scale(0.5) translate(-10,0)'><rect x='82' y='40' width='26' height='120' fill='url(%23a)'/><rect x='74' y='40' width='72' height='26' fill='url(%23b)'/><rect x='74' y='92' width='62' height='26' fill='url(%23b)'/><rect x='74' y='40' width='8' height='26' fill='%23B5070F'/><rect x='74' y='92' width='8' height='26' fill='%23B5070F'/></g></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -883,8 +888,11 @@ function applyUI(){
 /* Tür sıraları: PDF'teki bölümler (iki dilli başlıklar) */
 const ROWS = [
   { id:'trend',   title:{tr:'Şu An Trend', en:'Trending Now'},            path:'/trending/movie/week', params:{} },
+  { id:'vizyon',  title:{tr:'Vizyonda', en:'In Theaters'},                path:'/movie/now_playing', params:{region:'TR'} },
+  { id:'yakinda', title:{tr:'Yakında Vizyonda', en:'Coming Soon'},        path:'/movie/upcoming', params:{region:'TR'} },
   { id:'trfilm',  title:{tr:'Türk Filmleri', en:'Turkish Movies'},        path:'/discover/movie', params:{with_original_language:'tr', sort_by:'popularity.desc'} },
   { id:'dizi',    title:{tr:'Popüler Diziler', en:'Popular TV Shows'},    path:'/tv/popular', params:{}, type:'tv' },
+  { id:'yayinda', title:{tr:'Şu An Yayında', en:'Currently Airing'},      path:'/tv/on_the_air', params:{}, type:'tv' },
   { id:'trdizi',  title:{tr:'Türk Dizileri', en:'Turkish TV Shows'},      path:'/discover/tv', params:{with_original_language:'tr', sort_by:'popularity.desc'}, type:'tv' },
   { id:'aksiyon', title:{tr:'Aksiyon & Macera', en:'Action & Adventure'}, path:'/discover/movie', params:{with_genres:'28,12', sort_by:'popularity.desc'} },
   { id:'bilim',   title:{tr:'Bilim Kurgu', en:'Sci-Fi'},                  path:'/discover/movie', params:{with_genres:'878',   sort_by:'popularity.desc'} },
