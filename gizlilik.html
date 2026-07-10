@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="FilmArşivi gizlilik ve çerez politikası: hangi veriler saklanır, üçüncü taraf hizmetler ve KVKK haklarınız.">
+<meta name="theme-color" content="#0E0E10">
+<title>Gizlilik Politikası — FilmArşivi</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#141417;--deep:#0E0E10;--panel:#1C1C21;--text:#F2F2F4;--muted:#9A9AA3;--red:#E50914}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--deep);color:var(--text);font-family:Outfit,sans-serif;line-height:1.7}
+  header{position:sticky;top:0;background:rgba(14,14,16,.92);backdrop-filter:blur(8px);
+    border-bottom:1px solid rgba(255,255,255,.07);z-index:10}
+  .bar{max-width:860px;margin:0 auto;padding:.7rem 1.2rem;display:flex;align-items:center;gap:.6rem}
+  .brand{display:flex;align-items:center;gap:.5rem;font-weight:800;font-size:1.05rem;color:var(--text);text-decoration:none}
+  .bar nav{margin-left:auto;display:flex;gap:1.1rem}
+  .bar nav a{color:var(--muted);text-decoration:none;font-size:.88rem;font-weight:600}
+  .bar nav a:hover{color:var(--text)}
+  main{max-width:860px;margin:0 auto;padding:2.4rem 1.2rem 4rem}
+  h1{font-size:1.7rem;font-weight:800;margin-bottom:.4rem}
+  .sub{color:var(--muted);font-size:.88rem;margin-bottom:2rem}
+  h2{font-size:1.15rem;font-weight:800;margin:2rem 0 .6rem;color:#fff}
+  h3{font-size:1rem;font-weight:700;margin:1.4rem 0 .4rem}
+  p{margin:.7rem 0;color:#D9D9DE;font-size:.94rem}
+  ul{margin:.6rem 0 .6rem 1.3rem;color:#D9D9DE;font-size:.94rem}
+  li{margin:.35rem 0}
+  a{color:#FF4B54}
+  .card{background:var(--panel);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:1.4rem 1.5rem;margin:1.2rem 0}
+  .tag{display:inline-block;background:rgba(229,9,20,.15);color:#FF6B72;font-size:.72rem;font-weight:700;
+    padding:.2rem .6rem;border-radius:999px;margin-bottom:.5rem}
+  footer{border-top:1px solid rgba(255,255,255,.07);padding:1.6rem 1.2rem;text-align:center;color:var(--muted);font-size:.8rem}
+  footer a{color:var(--muted);margin:0 .5rem}
+  .note{background:rgba(229,9,20,.08);border:1px solid rgba(229,9,20,.25);border-radius:10px;padding:.8rem 1rem;font-size:.85rem;color:#E8B4B7}
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <a class="brand" href="index.html"><svg viewBox="0 0 200 200" width="30" height="30" aria-hidden="true"><defs>
+<linearGradient id="fg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C50811"/><stop offset="1" stop-color="#99050D"/></linearGradient>
+<linearGradient id="fr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF2A33"/><stop offset="1" stop-color="#E50914"/></linearGradient></defs>
+<rect x="82" y="40" width="26" height="120" fill="url(#fg)"/>
+<rect x="74" y="40" width="72" height="26" fill="url(#fr)"/>
+<rect x="74" y="92" width="62" height="26" fill="url(#fr)"/>
+<rect x="74" y="40" width="8" height="26" fill="#B5070F"/>
+<rect x="74" y="92" width="8" height="26" fill="#B5070F"/></svg> FilmArşivi</a>
+  <nav><a href="index.html">Ana Sayfa</a><a href="blog.html">Blog</a><a href="hakkinda.html">Hakkında</a><a href="gizlilik.html">Gizlilik</a></nav>
+</div></header>
+<main>
+<h1>Gizlilik ve Çerez Politikası</h1>
+<p class="sub">Son güncelleme: Temmuz 2026</p>
+
+<p>Bu sayfa, FilmArşivi ("site") ziyaretçilerinin hangi verilerinin, ne amaçla ve nasıl işlendiğini açıklar. FilmArşivi kişisel hobi amaçlı bir film-dizi keşif sitesidir; üyelik sistemi yoktur ve sizden ad, e-posta, telefon gibi kişisel bilgiler talep edilmez.</p>
+
+<h2>Toplanan ve saklanan veriler</h2>
+<h3>Cihazınızda saklananlar (localStorage)</h3>
+<p>Site, tercihlerinizi yalnızca kendi cihazınızın tarayıcısında saklar; bu veriler bize veya üçüncü kişilere gönderilmez:</p>
+<ul>
+<li><strong>Tema tercihi</strong> (açık/koyu görünüm)</li>
+<li><strong>Listem</strong> içeriği (kaydettiğiniz film ve diziler)</li>
+<li>Açılış animasyonunun bu oturumda gösterilip gösterilmediği bilgisi</li>
+</ul>
+<p>Bu verileri tarayıcınızın site verilerini temizleme özelliğiyle istediğiniz an silebilirsiniz.</p>
+
+<h3>Üçüncü taraf hizmetler</h3>
+<ul>
+<li><strong>TMDB (The Movie Database):</strong> Film ve dizi bilgileri, görseller ve fragman verileri TMDB API'sinden alınır. Bu istekler bir Cloudflare Workers köprüsü üzerinden iletilir; istek sırasında IP adresiniz bu hizmetler tarafından teknik zorunluluk gereği işlenebilir. Bu site TMDB tarafından onaylanmamış veya sertifikalandırılmamıştır.</li>
+<li><strong>YouTube:</strong> Fragmanlar YouTube oynatıcısıyla gösterilir. Bir fragman oynattığınızda YouTube (Google) kendi çerez ve gizlilik politikalarını uygular.</li>
+<li><strong>Google Fonts:</strong> Yazı tipi Google Fonts üzerinden yüklenir.</li>
+<li><strong>GitHub Pages:</strong> Site GitHub Pages altyapısında barındırılır; GitHub sunucu günlükleri tutabilir.</li>
+</ul>
+
+<h2>Çerezler ve reklamlar</h2>
+<p>Sitenin kendisi takip çerezi kullanmaz. İleride Google AdSense reklamları gösterilmesi planlanmaktadır; reklamlar aktif olduğunda Google ve iş ortakları, ilgi alanına dayalı reklam sunmak için çerez kullanabilir. Bu durumda Avrupa Ekonomik Alanı ve Birleşik Krallık ziyaretçilerine Google'ın onaylı rıza yönetim platformu (CMP) üzerinden izin ekranı gösterilecek ve bu politika güncellenecektir. Kişiselleştirilmiş reklam tercihlerinizi <a href="https://adssettings.google.com" rel="noopener" target="_blank">Google Reklam Ayarları</a>'ndan yönetebilirsiniz.</p>
+
+<h2>KVKK kapsamında haklarınız</h2>
+<p>6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında; verilerinizin işlenip işlenmediğini öğrenme, işlenmişse bilgi talep etme, düzeltilmesini veya silinmesini isteme haklarına sahipsiniz. Site tarafımızca kişisel veri saklanmadığından bu talepler çoğunlukla cihazınızdaki verileri silmenizle karşılanır; yine de her türlü soru için <a href="hakkinda.html">iletişim sayfasından</a> bize ulaşabilirsiniz.</p>
+
+<h2>Değişiklikler</h2>
+<p>Bu politika gerektiğinde güncellenebilir; güncel sürüm her zaman bu sayfada yayımlanır.</p>
+</main>
+<footer>© 2026 FilmArşivi ·
+  <a href="index.html">Ana Sayfa</a><a href="blog.html">Blog</a><a href="hakkinda.html">Hakkında &amp; İletişim</a><a href="gizlilik.html">Gizlilik Politikası</a>
+</footer>
+</body>
+</html>
