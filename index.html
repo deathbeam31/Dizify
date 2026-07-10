@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FilmArşivi — Film & Dizi Keşfi</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M63.0,25.5 A26,26 0 1 0 68.4,66.4' fill='none' stroke='%23FF7A1A' stroke-width='9' stroke-linecap='round'/%3E%3Cpath d='M71.2,69.2 L65.6,63.6 L84.6,44.5 L84.3,50.5 L90.3,50.1 Z' fill='%23FF2D55'/%3E%3Ccircle cx='68.4' cy='66.4' r='4' fill='%23FF2D55'/%3E%3Ccircle cx='50' cy='48' r='5' fill='%23FFD98F'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='a' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%23C50811'/><stop offset='1' stop-color='%2399050D'/></linearGradient><linearGradient id='b' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%23FF2A33'/><stop offset='1' stop-color='%23E50914'/></linearGradient></defs><g transform='scale(0.5) translate(-10,0)'><rect x='82' y='40' width='26' height='120' fill='url(%23a)'/><rect x='74' y='40' width='72' height='26' fill='url(%23b)'/><rect x='74' y='92' width='62' height='26' fill='url(%23b)'/><rect x='74' y='40' width='8' height='26' fill='%23B5070F'/><rect x='74' y='92' width='8' height='26' fill='%23B5070F'/></g></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -208,7 +208,7 @@
     border-bottom:1px solid rgba(255,255,255,.06)}
   .logo{display:flex; align-items:center; gap:.5rem; font-weight:800; font-size:1.08rem;
     letter-spacing:.04em; cursor:pointer; flex-shrink:0}
-  .logo svg{width:32px; height:32px; filter:drop-shadow(0 0 8px rgba(255,122,26,.55))}
+  .logo svg{width:32px; height:32px; filter:drop-shadow(0 0 8px rgba(229,9,20,.55))}
   .nav-links{display:flex; gap:1.2rem}
   .nav-links a{color:var(--muted); text-decoration:none; font-size:.88rem; font-weight:600;
     transition:color .2s; cursor:pointer}
@@ -289,7 +289,7 @@
   .hero-crescent{
     position:absolute; right:clamp(-4rem,2vw,4rem); top:8%; z-index:1;
     width:clamp(180px,26vw,340px); opacity:.45;
-    filter:drop-shadow(0 0 40px rgba(255,122,26,.35));
+    filter:drop-shadow(0 0 40px rgba(229,9,20,.35));
     pointer-events:none;
   }
   .hero-inner{position:relative; z-index:2; max-width:640px}
@@ -628,18 +628,28 @@
   <!-- ============ FİLMARŞİVİ AMBLEMİ (sprite) ============ -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
-      <linearGradient id="frGold" x1=".7" y1="0" x2=".2" y2="1">
-        <stop offset="0" stop-color="#FFD98F"/><stop offset=".45" stop-color="#FF7A1A"/><stop offset="1" stop-color="#FF3D1F"/>
+      <linearGradient id="frGold" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#C50811"/><stop offset="1" stop-color="#99050D"/>
       </linearGradient>
-      <linearGradient id="frRib" x1="0" y1="1" x2="1" y2="0">
-        <stop offset="0" stop-color="#FF3D1F"/><stop offset="1" stop-color="#FF2D55"/>
+      <linearGradient id="frRib" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#FF2A33"/><stop offset="1" stop-color="#E50914"/>
+      </linearGradient>
+      <linearGradient id="frShd" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#000" stop-opacity=".42"/><stop offset="1" stop-color="#000" stop-opacity="0"/>
       </linearGradient>
     </defs>
     <g id="frMark">
-      <path d="M126.0,51.0 A52,52 0 1 0 136.8,132.8"
-            fill="none" stroke="url(#frGold)" stroke-width="16" stroke-linecap="round"/>
-      <path fill-rule="evenodd" fill="url(#frRib)" d="M142.4,138.4 L131.1,127.1 L169.3,88.9 L168.6,100.9 L180.6,100.2 Z M128.8,132.8 a8.0,8.0 0 1 0 16.0,0 a8.0,8.0 0 1 0 -16.0,0 M147.2,119.3 a3,3 0 1 0 6,0 a3,3 0 1 0 -6,0 M158.5,108.0 a3,3 0 1 0 6,0 a3,3 0 1 0 -6,0 "/>
-      <circle cx="100" cy="96" r="9" fill="#FFD98F"/>
+      <!-- gövde: arkada, derin kırmızı -->
+      <rect x="82" y="40" width="26" height="120" fill="url(#frGold)"/>
+      <!-- kesişim gölgeleri -->
+      <rect x="82" y="66" width="26" height="9" fill="url(#frShd)"/>
+      <rect x="82" y="118" width="26" height="9" fill="url(#frShd)"/>
+      <!-- kollar: önde, parlak kırmızı -->
+      <rect x="74" y="40" width="72" height="26" fill="url(#frRib)"/>
+      <rect x="74" y="92" width="62" height="26" fill="url(#frRib)"/>
+      <!-- arkaya sarma sekmeleri -->
+      <rect x="74" y="40" width="8" height="26" fill="#B5070F"/>
+      <rect x="74" y="92" width="8" height="26" fill="#B5070F"/>
     </g>
   </svg>
 
