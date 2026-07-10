@@ -736,6 +736,7 @@
         <a id="navSeries" href="#row-dizi" onclick="goHome(true)">Diziler</a>
         <a id="navCats" href="#row-aksiyon" onclick="goHome(true)">Kategoriler</a>
         <a id="navList" onclick="showMyList()">Listem</a>
+        <a id="navBlog" href="blog.html">Blog</a>
       </div>
       <div class="searchbox">
         <input type="search" id="searchInput" placeholder="Film veya dizi ara..." autocomplete="off">
@@ -785,8 +786,10 @@
           FilmArşivi
         </div>
         <div class="footer-links">
-          <a href="#" id="fAbout">Hakkında</a>
-          <a href="#" id="fContact">İletişim</a>
+          <a href="blog.html" id="fBlog">Blog</a>
+          <a href="hakkinda.html" id="fAbout">Hakkında</a>
+          <a href="hakkinda.html" id="fContact">İletişim</a>
+          <a href="gizlilik.html" id="fPrivacy">Gizlilik Politikası</a>
           <a href="#" id="fPrivacy">Gizlilik Politikası</a>
           <a href="#" id="fCookie">Çerez Politikası</a>
         </div>
@@ -850,8 +853,8 @@ const UI = {
     jw:'İzleme sağlayıcı verisi JustWatch tarafından sağlanır.',
     noOverview:'Özet bulunamadı.', detailFail:'Detaylar yüklenemedi.',
     watchOnYt:"Oynatıcı açılmazsa YouTube'da izle ↗",
-    navList:'Listem', myListTitle:'Listem', emptyList:'Listen henüz boş — kartlardaki ＋ düğmesiyle film ve dizi ekleyebilirsin.', addList:'＋ Listeme Ekle', inListTxt:'✓ Listemde',
-    fAbout:'Hakkında', fContact:'İletişim', fPrivacy:'Gizlilik Politikası', fCookie:'Çerez Politikası',
+    navList:'Listem', navBlog:'Blog', myListTitle:'Listem', emptyList:'Listen henüz boş — kartlardaki ＋ düğmesiyle film ve dizi ekleyebilirsin.', addList:'＋ Listeme Ekle', inListTxt:'✓ Listemde',
+    fBlog:'Blog', fAbout:'Hakkında', fContact:'İletişim', fPrivacy:'Gizlilik Politikası', fCookie:'Çerez Politikası',
     replay:'↻ Açılış animasyonunu oynat',
     copy:'© 2026 FilmArşivi — Bu site bir tasarım projesidir, film/dizi verileri gösterim amaçlıdır.',
     tvTag:'Dizi', seasons:'sezon', min:'dk'
@@ -868,8 +871,8 @@ const UI = {
     jw:'Streaming data provided by JustWatch.',
     noOverview:'No overview available.', detailFail:'Could not load details.',
     watchOnYt:"If the player doesn't load, watch on YouTube ↗",
-    navList:'My List', myListTitle:'My List', emptyList:'Your list is empty — add movies and shows with the ＋ button on cards.', addList:'＋ Add to My List', inListTxt:'✓ In My List',
-    fAbout:'About', fContact:'Contact', fPrivacy:'Privacy Policy', fCookie:'Cookie Policy',
+    navList:'My List', navBlog:'Blog', myListTitle:'My List', emptyList:'Your list is empty — add movies and shows with the ＋ button on cards.', addList:'＋ Add to My List', inListTxt:'✓ In My List',
+    fBlog:'Blog', fAbout:'About', fContact:'Contact', fPrivacy:'Privacy Policy', fCookie:'Cookie Policy',
     replay:'↻ Play opening animation',
     copy:'© 2026 FilmArşivi — This site is a design project; movie/TV data is for display purposes.',
     tvTag:'TV', seasons:'seasons', min:'min'
@@ -879,9 +882,9 @@ const t = k => UI[L()][k];
 
 function applyUI(){
   const set = (id, key) => { const el = document.getElementById(id); if(el) el.textContent = t(key); };
-  set('navHome','navHome'); set('navMovies','navMovies'); set('navSeries','navSeries'); set('navCats','navCats'); set('navList','navList');
+  set('navHome','navHome'); set('navMovies','navMovies'); set('navSeries','navSeries'); set('navCats','navCats'); set('navList','navList'); set('navBlog','navBlog');
   set('backBtn','back'); set('replayBtn','replay'); set('copyText','copy');
-  set('fAbout','fAbout'); set('fContact','fContact'); set('fPrivacy','fPrivacy'); set('fCookie','fCookie');
+  set('fBlog','fBlog'); set('fAbout','fAbout'); set('fContact','fContact'); set('fPrivacy','fPrivacy'); set('fCookie','fCookie');
   document.getElementById('searchInput').placeholder = t('searchPh');
 }
 
