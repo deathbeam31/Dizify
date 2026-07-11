@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Film ve dizi izleme rehberleri, listeler ve editör notları.">
+<meta name="description" content="FilmArşivi Blog — film ve dizi izleme rehberleri, listeler ve editör notları. Watch guides and lists in Turkish and English.">
 <meta name="theme-color" content="#0E0E10">
 <title>Blog — FilmArşivi</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
@@ -15,24 +15,24 @@
     border-bottom:1px solid rgba(255,255,255,.07);z-index:10}
   .bar{max-width:860px;margin:0 auto;padding:.7rem 1.2rem;display:flex;align-items:center;gap:.6rem}
   .brand{display:flex;align-items:center;gap:.5rem;font-weight:800;font-size:1.05rem;color:var(--text);text-decoration:none}
-  .bar nav{margin-left:auto;display:flex;gap:1.1rem}
+  .bar nav{margin-left:auto;display:flex;gap:1.1rem;align-items:center}
   .bar nav a{color:var(--muted);text-decoration:none;font-size:.88rem;font-weight:600}
   .bar nav a:hover{color:var(--text)}
+  .langs{display:flex;gap:.15rem;border:1px solid rgba(255,255,255,.15);border-radius:999px;padding:.15rem}
+  .langs button{background:none;border:none;color:var(--muted);font-family:inherit;font-weight:700;
+    font-size:.75rem;padding:.25rem .6rem;border-radius:999px;cursor:pointer}
+  .langs button.active{background:var(--red);color:#fff}
   main{max-width:860px;margin:0 auto;padding:2.4rem 1.2rem 4rem}
   h1{font-size:1.7rem;font-weight:800;margin-bottom:.4rem}
   .sub{color:var(--muted);font-size:.88rem;margin-bottom:2rem}
-  h2{font-size:1.15rem;font-weight:800;margin:2rem 0 .6rem;color:#fff}
-  h3{font-size:1rem;font-weight:700;margin:1.4rem 0 .4rem}
+  h2{font-size:1.15rem;font-weight:800;margin:0 0 .6rem;color:#fff}
   p{margin:.7rem 0;color:#D9D9DE;font-size:.94rem}
-  ul{margin:.6rem 0 .6rem 1.3rem;color:#D9D9DE;font-size:.94rem}
-  li{margin:.35rem 0}
   a{color:#FF4B54}
   .card{background:var(--panel);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:1.4rem 1.5rem;margin:1.2rem 0}
   .tag{display:inline-block;background:rgba(229,9,20,.15);color:#FF6B72;font-size:.72rem;font-weight:700;
     padding:.2rem .6rem;border-radius:999px;margin-bottom:.5rem}
   footer{border-top:1px solid rgba(255,255,255,.07);padding:1.6rem 1.2rem;text-align:center;color:var(--muted);font-size:.8rem}
   footer a{color:var(--muted);margin:0 .5rem}
-  .note{background:rgba(229,9,20,.08);border:1px solid rgba(229,9,20,.25);border-radius:10px;padding:.8rem 1rem;font-size:.85rem;color:#E8B4B7}
 </style>
 </head>
 <body>
@@ -45,13 +45,19 @@
 <rect x="74" y="92" width="62" height="26" fill="url(#fr)"/>
 <rect x="74" y="40" width="8" height="26" fill="#B5070F"/>
 <rect x="74" y="92" width="8" height="26" fill="#B5070F"/></svg> FilmArşivi</a>
-  <nav><a href="index.html">Ana Sayfa</a><a href="blog.html">Blog</a><a href="hakkinda.html">Hakkında</a><a href="gizlilik.html">Gizlilik</a></nav>
+  <nav>
+    <a href="index.html" data-tr="Ana Sayfa" data-en="Home">Ana Sayfa</a>
+    <a href="hakkinda.html" data-tr="Hakkında" data-en="About">Hakkında</a>
+    <a href="gizlilik.html" data-tr="Gizlilik" data-en="Privacy">Gizlilik</a>
+    <div class="langs"><button id="lTR" class="active" onclick="setL('tr')">TR</button><button id="lEN" onclick="setL('en')">EN</button></div>
+  </nav>
 </div></header>
 <main>
+<div id="content-tr">
 <h1>Blog</h1>
 <p class="sub">İzleme rehberleri, listeler ve editör notları</p>
 
-<div class="card" id="yazi-1">
+<div class="card">
 <span class="tag">İZLEME REHBERİ</span>
 <h2 style="margin-top:.2rem">Sinemaya Yeni Merak Salanlar İçin 10 Modern Klasik</h2>
 <p>Herkesin "mutlaka izle" dediği yüzlerce filmlik listeler gözünüzü korkutuyorsa doğru yerdesiniz. Bu liste, son otuz yılın en erişilebilir başyapıtlarından seçildi: hem sinema dilini öğreten hem de bir cumartesi akşamını şenlendiren filmler.</p>
@@ -61,16 +67,16 @@
 <p>Bu on filmi bitirdiğinizde yalnızca "izlenecekler" listenizi eritmekle kalmaz, hangi türün size hitap ettiğini de keşfetmiş olursunuz — gerisi FilmArşivi'nin kategori sıralarında sizi bekliyor.</p>
 </div>
 
-<div class="card" id="yazi-2">
+<div class="card">
 <span class="tag">LİSTE</span>
 <h2 style="margin-top:.2rem">Gerilim Sevenlere: Nabzı Yükselten 7 Film</h2>
 <p>İyi gerilim, korkutmadan gerer; izleyiciyi koltuğun ucuna sesle, kurguyla ve "şimdi ne olacak" sorusuyla çeker. Bu yedili, türün farklı damarlarından tek gecelik seçkiler sunuyor.</p>
 <p><em>Yedi</em> (Se7en) dedektif gerilimin karanlık zirvesi; finali otuz yıldır tartışılıyor. <em>Kuzuların Sessizliği</em>, bir sohbet sahnesinin bile ter döktürebileceğini kanıtlar. Daha psikolojik bir hat isteyenler için <em>Gone Girl / Kayıp Kız</em>, evlilik üzerinden medya çağına attığı çelmeyle sarsıcıdır.</p>
-<p>Türk seyircisinin geç keşfettiği <em>Eski Dostlar</em> (Oldboy) intikamı bir sanat formuna dönüştürür — mideniz sağlamsa. <em>Sicario</em>, sınır ötesi operasyonların gri ahlakını gerilime çevirirken; <em>Whiplash</em> silahsız, kansız, sadece bir davul setiyle nefes aldırmaz. Kapanışı <em>Gerçeğe Çağrı</em> değil, <em>Prisoners / Tutsak</em> yapsın: kayıp çocuk vakasının babayı sürüklediği karanlık, uzun süre üzerinizden atamayacağınız türden.</p>
+<p>Türk seyircisinin geç keşfettiği <em>Eski Dostlar</em> (Oldboy) intikamı bir sanat formuna dönüştürür — mideniz sağlamsa. <em>Sicario</em>, sınır ötesi operasyonların gri ahlakını gerilime çevirirken; <em>Whiplash</em> silahsız, kansız, sadece bir davul setiyle nefes aldırmaz. Kapanışı <em>Prisoners / Tutsak</em> yapsın: kayıp çocuk vakasının babayı sürüklediği karanlık, uzun süre üzerinizden atamayacağınız türden.</p>
 <p>Hepsinin fragmanına ve Türkiye'de hangi platformda olduğuna ana sayfadaki arama kutusundan saniyeler içinde ulaşabilirsiniz.</p>
 </div>
 
-<div class="card" id="yazi-3">
+<div class="card">
 <span class="tag">DİZİ REHBERİ</span>
 <h2 style="margin-top:.2rem">Dizi Maratonuna Nereden Başlamalı? Tür Tür Başlangıç Rehberi</h2>
 <p>"Herkes izlemiş, ben nereden gireyim?" duygusu, dizi dünyasının en büyük eşiğidir. Kestirmeden söyleyelim: doğru başlangıç dizisi, sevdiğiniz türe göre değişir.</p>
@@ -79,9 +85,58 @@
 <p><strong>Komedi:</strong> <em>The Office</em> ve <em>Friends</em> yıllardır "arka planda dönen dizi" tahtını paylaşıyor; hangisini seçeceğiniz mizah damarınıza kalmış. Türk yapımlarından <em>Gibi</em>, absürt mizahıyla son yılların en çok konuşulan işi oldu.</p>
 <p>Kural basit: ilk iki bölümde sizi yakalamayan diziyi bırakmaktan çekinmeyin — maraton keyif işidir, ödev değil. Güncel bölüm takvimleri ve platform bilgileri için ana sayfadaki "Şu An Yayında" sırasına göz atın.</p>
 </div>
+</div>
+<div id="content-en" style="display:none">
+<h1>Blog</h1>
+<p class="sub">Watch guides, lists and editor's notes</p>
+
+<div class="card">
+<span class="tag">WATCH GUIDE</span>
+<h2 style="margin-top:.2rem">10 Modern Classics for Newcomers to Cinema</h2>
+<p>If those "must-watch" lists with hundreds of titles intimidate you, you're in the right place. This list draws from the most accessible masterpieces of the last thirty years: films that teach the language of cinema while still making a Saturday night fun.</p>
+<p><strong>The starter trio:</strong> <em>The Shawshank Redemption</em> is the film of hope, <em>The Green Mile</em> of conscience, and <em>Forrest Gump</em> of pure kindness. All three are a masterclass in storytelling without ever drifting into heavy art-house territory.</p>
+<p><strong>For those who like a mental workout:</strong> <em>Fight Club</em> and <em>The Prestige</em> turn into entirely different films on a second viewing, thanks to endings that rewind everything you thought you knew. <em>Inception</em> proves a modern blockbuster can be genuinely clever with its dream-within-a-dream structure.</p>
+<p><strong>For emotional depth:</strong> <em>Eternal Sunshine of the Spotless Mind</em> tells a breakup through sci-fi in one of the most original scripts ever written; <em>Her</em> turns falling in love with an AI into a question more relevant today than ever. <em>Parasite</em> rewrote Oscar history by dissecting class with dark humor, and <em>Interstellar</em> earns its spot by fitting hard science and fatherhood into the same scene.</p>
+<p>Finish these ten and you won't just shrink your watchlist — you'll discover which genres speak to you. The rest is waiting in FilmArşivi's category rows.</p>
+</div>
+
+<div class="card">
+<span class="tag">LIST</span>
+<h2 style="margin-top:.2rem">For Thriller Lovers: 7 Films That Raise Your Pulse</h2>
+<p>A good thriller doesn't need to scare you; it pulls you to the edge of your seat with sound, editing and one relentless question: what happens next? These seven cover the genre's different veins, each perfect for a single night.</p>
+<p><em>Se7en</em> is the dark summit of detective thrillers; people have argued about its ending for thirty years. <em>The Silence of the Lambs</em> proves a simple conversation can make you sweat. If you want something more psychological, <em>Gone Girl</em> is a devastating trip through marriage and the media age.</p>
+<p><em>Oldboy</em> turns revenge into an art form — if your stomach can take it. <em>Sicario</em> converts the gray morality of cross-border operations into pure tension, while <em>Whiplash</em> leaves you breathless with no guns and no blood, just a drum kit. Close the night with <em>Prisoners</em>: the darkness a father is dragged into after his child disappears will stay with you for a long time.</p>
+<p>Trailers and streaming availability for every one of these are seconds away in the search box on the home page.</p>
+</div>
+
+<div class="card">
+<span class="tag">TV GUIDE</span>
+<h2 style="margin-top:.2rem">Where to Start Your TV Marathon: A Genre-by-Genre Guide</h2>
+<p>"Everyone's seen it — where do I even begin?" is the biggest hurdle in television. The short answer: the right first show depends on the genre you love.</p>
+<p><strong>Crime and drama:</strong> <em>Breaking Bad</em>, no contest. Five seasons of a flawless transformation story; when it ends, you can stay in the same universe with <em>Better Call Saul</em>. For a shorter commitment, <em>Chernobyl</em> wraps in five episodes and remains one of the highest-rated shows in TV history.</p>
+<p><strong>Fantasy:</strong> <em>Game of Thrones</em> is still the gateway — even arguing about its finale is a social activity of its own. On the sci-fi side, <em>Stranger Things</em> balances nostalgia and horror for all ages, while <em>Black Mirror</em>'s standalone episodes make it perfect for "let me just try one."</p>
+<p><strong>Comedy:</strong> <em>The Office</em> and <em>Friends</em> have shared the "background comfort show" throne for years; which one you pick depends on your sense of humor. Among Turkish productions, <em>Gibi</em> became the most talked-about comedy of recent years with its absurdist style.</p>
+<p>One simple rule: if a show hasn't hooked you in two episodes, drop it guilt-free — marathons are for joy, not homework. For current episode schedules and platforms, check the "Currently Airing" row on the home page.</p>
+</div>
+</div>
 </main>
 <footer>© 2026 FilmArşivi ·
-  <a href="index.html">Ana Sayfa</a><a href="blog.html">Blog</a><a href="hakkinda.html">Hakkında &amp; İletişim</a><a href="gizlilik.html">Gizlilik Politikası</a>
+  <a href="index.html" data-tr="Ana Sayfa" data-en="Home">Ana Sayfa</a><a href="hakkinda.html" data-tr="Hakkında &amp; İletişim" data-en="About &amp; Contact">Hakkında &amp; İletişim</a><a href="gizlilik.html" data-tr="Gizlilik Politikası" data-en="Privacy Policy">Gizlilik Politikası</a>
 </footer>
+<script>
+function setL(l){
+  document.getElementById('content-tr').style.display = l==='tr' ? '' : 'none';
+  document.getElementById('content-en').style.display = l==='en' ? '' : 'none';
+  document.getElementById('lTR').classList.toggle('active', l==='tr');
+  document.getElementById('lEN').classList.toggle('active', l==='en');
+  document.querySelectorAll('[data-tr]').forEach(a => { a.innerHTML = l==='tr' ? a.dataset.tr : a.dataset.en; });
+  document.documentElement.lang = l;
+  try{ localStorage.setItem('dizifyBlogLang', l); }catch(e){}
+}
+try{
+  var saved = localStorage.getItem('dizifyBlogLang');
+  if(saved === 'en') setL('en');
+}catch(e){}
+</script>
 </body>
 </html>
