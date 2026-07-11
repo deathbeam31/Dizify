@@ -370,6 +370,54 @@
   .btn-ghost:hover{background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.35)}
 
   /* --- REKLAM ALANI --- */
+  /* --- NE İZLESEM MAKİNESİ --- */
+  .mood{
+    max-width:1280px; margin:0 auto 1rem; padding:1.6rem clamp(1rem,4vw,3rem) 1.8rem;
+  }
+  .mood h2{font-size:1.35rem; font-weight:800; margin-bottom:.25rem}
+  .mood-sub{color:var(--muted); font-size:.88rem; margin-bottom:1rem}
+  .mood-chips{display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:.9rem}
+  .chip{
+    padding:.5rem 1rem; border-radius:999px; cursor:pointer;
+    border:1px solid rgba(255,255,255,.16); background:rgba(255,255,255,.04);
+    color:var(--text); font-family:inherit; font-size:.85rem; font-weight:600;
+    transition:border-color .2s, background .2s, transform .15s;
+  }
+  .chip:hover{border-color:var(--flame); transform:translateY(-1px)}
+  .chip.on{background:linear-gradient(120deg, var(--ember), var(--flame)); border-color:transparent; color:#fff}
+  .mood-row{display:flex; flex-wrap:wrap; gap:.8rem; align-items:center}
+  .mood-toggle{display:flex; gap:.15rem; border:1px solid rgba(255,255,255,.14); border-radius:999px; padding:.18rem}
+  .mood-toggle button{
+    background:none; border:none; color:var(--muted); font-family:inherit; cursor:pointer;
+    font-size:.8rem; font-weight:700; padding:.35rem .8rem; border-radius:999px;
+  }
+  .mood-toggle button.on{background:rgba(255,122,26,.9); color:#fff}
+  .mood-go{padding:.6rem 1.6rem; font-size:.9rem}
+  .mood-go.spin{opacity:.6; pointer-events:none}
+  .mood-result{margin-top:1.2rem}
+  .mood-card{
+    display:flex; gap:1.2rem; background:var(--panel);
+    border:1px solid rgba(255,255,255,.09); border-radius:16px; overflow:hidden;
+    animation:moodIn .5s cubic-bezier(.2,.9,.3,1.1);
+  }
+  @keyframes moodIn{from{opacity:0; transform:translateY(14px) scale(.98)} to{opacity:1; transform:none}}
+  .mood-card img{width:min(38%,300px); aspect-ratio:16/10; object-fit:cover; flex-shrink:0}
+  .mood-card .mc-body{padding:1rem 1.2rem 1rem 0; display:flex; flex-direction:column; gap:.4rem; min-width:0}
+  .mc-title{font-size:1.15rem; font-weight:800}
+  .mc-meta{display:flex; gap:.7rem; font-size:.8rem; color:var(--muted)}
+  .mc-meta .rating{color:var(--amber); font-weight:800}
+  .mc-ov{font-size:.85rem; color:var(--muted); line-height:1.55;
+    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden}
+  .mc-actions{display:flex; gap:.6rem; margin-top:auto; padding-top:.6rem; flex-wrap:wrap}
+  body.light .mood-card{border-color:rgba(0,0,0,.1)}
+  body.light .chip{border-color:rgba(0,0,0,.18); background:rgba(0,0,0,.03)}
+  body.light .mood-toggle{border-color:rgba(0,0,0,.18)}
+  @media (max-width:640px){
+    .mood-card{flex-direction:column}
+    .mood-card img{width:100%; aspect-ratio:16/9}
+    .mood-card .mc-body{padding:0 1rem 1rem}
+  }
+
   .ad-strip{
     margin:0 clamp(1rem,4vw,3rem);
     padding:1.2rem; border-radius:10px;
@@ -768,6 +816,18 @@
     <div class="ad-strip">Reklam Alanı · Google AdSense · 970×90</div>
 
     <main id="homeSection">
+      <!-- Ne İzlesem makinesi -->
+      <section class="mood" id="moodSection">
+        <h2 id="moodTitle">🎯 Ne İzlesem?</h2>
+        <p class="mood-sub" id="moodSub">Modunu seç, gerisini bize bırak — sana özel bir öneri bulalım.</p>
+        <div class="mood-chips" id="moodChips"></div>
+        <div class="mood-row">
+          <div class="mood-toggle" id="moodType"></div>
+          <div class="mood-toggle" id="moodEra"></div>
+          <button class="btn-primary mood-go" id="moodGo" onclick="suggest()">🎲 <span id="moodGoTxt">Öner</span></button>
+        </div>
+        <div class="mood-result" id="moodResult"></div>
+      </section>
       <!-- Sıralar JS ile doldurulur -->
     </main>
 
@@ -852,7 +912,10 @@ const UI = {
     jw:'İzleme sağlayıcı verisi JustWatch tarafından sağlanır.',
     noOverview:'Özet bulunamadı.', detailFail:'Detaylar yüklenemedi.',
     watchOnYt:"Oynatıcı açılmazsa YouTube'da izle ↗",
-    navList:'Listem', navBlog:'Blog', myListTitle:'Listem', emptyList:'Listen henüz boş — kartlardaki ＋ düğmesiyle film ve dizi ekleyebilirsin.', addList:'＋ Listeme Ekle', inListTxt:'✓ Listemde',
+    navList:'Listem', navBlog:'Blog',
+    moodTitle:'🎯 Ne İzlesem?', moodSub:'Modunu seç, gerisini bize bırak — sana özel bir öneri bulalım.',
+    moodGo:'Öner', moodAgain:'Başka Öner', moodNone:'Bu kombinasyonda öneri bulunamadı — modu veya dönemi değiştirip tekrar dene.',
+    eraAny:'Dönem Fark Etmez', era2020:'2020 ve sonrası', era2010:"2010'lar", era2000:"2000'ler", era90:"90'lar", myListTitle:'Listem', emptyList:'Listen henüz boş — kartlardaki ＋ düğmesiyle film ve dizi ekleyebilirsin.', addList:'＋ Listeme Ekle', inListTxt:'✓ Listemde',
     fBlog:'Blog', fAbout:'Hakkında', fContact:'İletişim', fPrivacy:'Gizlilik Politikası', fCookie:'Çerez Politikası',
     replay:'↻ Açılış animasyonunu oynat',
     copy:'© 2026 FilmArşivi — Bu site bir tasarım projesidir, film/dizi verileri gösterim amaçlıdır.',
@@ -870,7 +933,10 @@ const UI = {
     jw:'Streaming data provided by JustWatch.',
     noOverview:'No overview available.', detailFail:'Could not load details.',
     watchOnYt:"If the player doesn't load, watch on YouTube ↗",
-    navList:'My List', navBlog:'Blog', myListTitle:'My List', emptyList:'Your list is empty — add movies and shows with the ＋ button on cards.', addList:'＋ Add to My List', inListTxt:'✓ In My List',
+    navList:'My List', navBlog:'Blog',
+    moodTitle:'🎯 What Should I Watch?', moodSub:'Pick your mood, leave the rest to us — we will find you a match.',
+    moodGo:'Suggest', moodAgain:'Try Another', moodNone:'No match for this combo — change the mood or era and try again.',
+    eraAny:'Any Era', era2020:'2020s', era2010:'2010s', era2000:'2000s', era90:'90s', myListTitle:'My List', emptyList:'Your list is empty — add movies and shows with the ＋ button on cards.', addList:'＋ Add to My List', inListTxt:'✓ In My List',
     fBlog:'Blog', fAbout:'About', fContact:'Contact', fPrivacy:'Privacy Policy', fCookie:'Cookie Policy',
     replay:'↻ Play opening animation',
     copy:'© 2026 FilmArşivi — This site is a design project; movie/TV data is for display purposes.',
@@ -882,6 +948,7 @@ const t = k => UI[L()][k];
 function applyUI(){
   const set = (id, key) => { const el = document.getElementById(id); if(el) el.textContent = t(key); };
   set('navHome','navHome'); set('navMovies','navMovies'); set('navSeries','navSeries'); set('navCats','navCats'); set('navList','navList'); set('navBlog','navBlog');
+  renderMood();
   set('backBtn','back'); set('replayBtn','replay'); set('copyText','copy');
   set('fBlog','fBlog'); set('fAbout','fAbout'); set('fContact','fContact'); set('fPrivacy','fPrivacy'); set('fCookie','fCookie');
   document.getElementById('searchInput').placeholder = t('searchPh');
@@ -999,6 +1066,105 @@ function cardHTML(item, forcedType){
         <div class="sub">${year}${genre ? ' · ' + genre : (isTV ? ' · ' + t('tvTag') : '')}</div>
       </div>
     </div>`;
+}
+
+/* ================= NE İZLESEM MAKİNESİ ================= */
+const MOODS = [
+  { id:'fun',    tr:'😄 Kafa Dağıtmalık', en:'😄 Light & Fun',      movie:'35,12',    tv:'35,10759' },
+  { id:'tense',  tr:'😱 Gerilim Dolu',    en:'😱 Edge of Seat',     movie:'53,9648',  tv:'80,9648' },
+  { id:'cry',    tr:'😭 Ağlatsın',        en:'😭 Make Me Cry',      movie:'18,10749', tv:'18' },
+  { id:'mind',   tr:'🤯 Zihin Açıcı',     en:'🤯 Mind-Bending',     movie:'878,9648', tv:'10765,9648' },
+  { id:'action', tr:'💥 Aksiyon Fırtınası', en:'💥 Pure Action',    movie:'28',       tv:'10759' },
+  { id:'horror', tr:'👻 Korku Gecesi',    en:'👻 Horror Night',     movie:'27',       tv:'9648,80' },
+  { id:'family', tr:'👨‍👩‍👧 Aile Keyfi',      en:'👨‍👩‍👧 Family Time',     movie:'10751,16', tv:'10751,16' },
+];
+const ERAS = [
+  { id:'any',  key:'eraAny' },
+  { id:'2020', key:'era2020', gte:'2020-01-01' },
+  { id:'2010', key:'era2010', gte:'2010-01-01', lte:'2019-12-31' },
+  { id:'2000', key:'era2000', gte:'2000-01-01', lte:'2009-12-31' },
+  { id:'90',   key:'era90',   gte:'1990-01-01', lte:'1999-12-31' },
+];
+let moodSel = 'fun', moodTypeSel = 'movie', moodEraSel = 'any';
+const suggested = new Set();
+
+function renderMood(){
+  const chips = document.getElementById('moodChips');
+  if(!chips) return;
+  chips.innerHTML = MOODS.map(m =>
+    `<button class="chip${m.id===moodSel?' on':''}" onclick="moodSel='${m.id}';renderMood()">${L()==='tr'?m.tr:m.en}</button>`
+  ).join('');
+  document.getElementById('moodType').innerHTML =
+    `<button class="${moodTypeSel==='movie'?'on':''}" onclick="moodTypeSel='movie';renderMood()">${t('navMovies')}</button>`+
+    `<button class="${moodTypeSel==='tv'?'on':''}" onclick="moodTypeSel='tv';renderMood()">${t('navSeries')}</button>`;
+  document.getElementById('moodEra').innerHTML = ERAS.map(e =>
+    `<button class="${e.id===moodEraSel?'on':''}" onclick="moodEraSel='${e.id}';renderMood()">${t(e.key)}</button>`
+  ).join('');
+  document.getElementById('moodTitle').textContent = t('moodTitle');
+  document.getElementById('moodSub').textContent = t('moodSub');
+  document.getElementById('moodGoTxt').textContent = t('moodGo');
+}
+
+async function suggest(){
+  const btn = document.getElementById('moodGo');
+  const box = document.getElementById('moodResult');
+  btn.classList.add('spin');
+  try{
+    const mood = MOODS.find(m => m.id === moodSel);
+    const era = ERAS.find(e => e.id === moodEraSel);
+    const isTV = moodTypeSel === 'tv';
+    const dateKey = isTV ? 'first_air_date' : 'primary_release_date';
+    const params = {
+      with_genres: isTV ? mood.tv : mood.movie,
+      sort_by: 'popularity.desc',
+      'vote_average.gte': 6.8,
+      'vote_count.gte': isTV ? 100 : 300,
+      page: 1 + Math.floor(Math.random() * 5),
+    };
+    if(era.gte) params[dateKey + '.gte'] = era.gte;
+    if(era.lte) params[dateKey + '.lte'] = era.lte;
+    let data = await tmdb('/discover/' + moodTypeSel, params);
+    if(!data.results || !data.results.length){
+      params.page = 1;
+      data = await tmdb('/discover/' + moodTypeSel, params);
+    }
+    let pool = (data.results || []).filter(x => x.backdrop_path || x.poster_path);
+    let fresh = pool.filter(x => !suggested.has(moodTypeSel + x.id));
+    if(!fresh.length){ pool.forEach(x => suggested.delete(moodTypeSel + x.id)); fresh = pool; }
+    if(!fresh.length){
+      box.innerHTML = `<div class="status">${t('moodNone')}</div>`;
+      return;
+    }
+    const pick = fresh[Math.floor(Math.random() * fresh.length)];
+    suggested.add(moodTypeSel + pick.id);
+    itemCache.set(moodTypeSel + '-' + pick.id, {...pick, media_type: moodTypeSel});
+    const title = escHTML(pick.title || pick.name || '');
+    const year = (pick.release_date || pick.first_air_date || '').slice(0, 4);
+    const rating = pick.vote_average ? pick.vote_average.toFixed(1) : '—';
+    const img = pick.backdrop_path
+      ? `${IMG}/w780${pick.backdrop_path}` : `${IMG}/w342${pick.poster_path}`;
+    const key = moodTypeSel + '-' + pick.id;
+    box.innerHTML = `
+      <div class="mood-card">
+        <img src="${img}" alt="${title}">
+        <div class="mc-body">
+          <div class="mc-title">${title}</div>
+          <div class="mc-meta"><span class="rating">★ ${rating}</span><span>${year}</span></div>
+          <p class="mc-ov">${escHTML(pick.overview || '')}</p>
+          <div class="mc-actions">
+            <button class="btn-primary" onclick="openDetail(${pick.id}, '${moodTypeSel}')">${t('watch')}</button>
+            <button class="hc-btn list-toggle" data-key="${key}"
+              onclick="toggleList('${moodTypeSel}', ${pick.id}, null)">${inList(moodTypeSel, pick.id) ? t('inListTxt') : t('addList')}</button>
+            <button class="hc-btn" onclick="suggest()">🎲 ${t('moodAgain')}</button>
+          </div>
+        </div>
+      </div>`;
+  }catch(err){
+    box.innerHTML = `<div class="status error">${t('detailFail')}</div>`;
+    console.error(err);
+  }finally{
+    btn.classList.remove('spin');
+  }
 }
 
 /* ================= LİSTEM ================= */
