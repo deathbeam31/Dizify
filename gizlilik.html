@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="FilmArşivi gizlilik ve çerez politikası: hangi veriler saklanır, üçüncü taraf hizmetler ve KVKK haklarınız.">
+<meta name="description" content="FilmArşivi gizlilik ve çerez politikası. FilmArşivi privacy and cookie policy.">
 <meta name="theme-color" content="#0E0E10">
 <title>Gizlilik Politikası — FilmArşivi</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
@@ -15,9 +15,13 @@
     border-bottom:1px solid rgba(255,255,255,.07);z-index:10}
   .bar{max-width:860px;margin:0 auto;padding:.7rem 1.2rem;display:flex;align-items:center;gap:.6rem}
   .brand{display:flex;align-items:center;gap:.5rem;font-weight:800;font-size:1.05rem;color:var(--text);text-decoration:none}
-  .bar nav{margin-left:auto;display:flex;gap:1.1rem}
+  .bar nav{margin-left:auto;display:flex;gap:1.1rem;align-items:center}
   .bar nav a{color:var(--muted);text-decoration:none;font-size:.88rem;font-weight:600}
   .bar nav a:hover{color:var(--text)}
+  .langs{display:flex;gap:.15rem;border:1px solid rgba(255,255,255,.15);border-radius:999px;padding:.15rem}
+  .langs button{background:none;border:none;color:var(--muted);font-family:inherit;font-weight:700;
+    font-size:.75rem;padding:.25rem .6rem;border-radius:999px;cursor:pointer}
+  .langs button.active{background:var(--red);color:#fff}
   main{max-width:860px;margin:0 auto;padding:2.4rem 1.2rem 4rem}
   h1{font-size:1.7rem;font-weight:800;margin-bottom:.4rem}
   .sub{color:var(--muted);font-size:.88rem;margin-bottom:2rem}
@@ -28,11 +32,8 @@
   li{margin:.35rem 0}
   a{color:#FF4B54}
   .card{background:var(--panel);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:1.4rem 1.5rem;margin:1.2rem 0}
-  .tag{display:inline-block;background:rgba(229,9,20,.15);color:#FF6B72;font-size:.72rem;font-weight:700;
-    padding:.2rem .6rem;border-radius:999px;margin-bottom:.5rem}
   footer{border-top:1px solid rgba(255,255,255,.07);padding:1.6rem 1.2rem;text-align:center;color:var(--muted);font-size:.8rem}
   footer a{color:var(--muted);margin:0 .5rem}
-  .note{background:rgba(229,9,20,.08);border:1px solid rgba(229,9,20,.25);border-radius:10px;padding:.8rem 1rem;font-size:.85rem;color:#E8B4B7}
 </style>
 </head>
 <body>
@@ -45,24 +46,28 @@
 <rect x="74" y="92" width="62" height="26" fill="url(#fr)"/>
 <rect x="74" y="40" width="8" height="26" fill="#B5070F"/>
 <rect x="74" y="92" width="8" height="26" fill="#B5070F"/></svg> FilmArşivi</a>
-  <nav><a href="index.html">Ana Sayfa</a><a href="blog.html">Blog</a><a href="hakkinda.html">Hakkında</a><a href="gizlilik.html">Gizlilik</a></nav>
+  <nav>
+    <a href="index.html" data-tr="Ana Sayfa" data-en="Home">Ana Sayfa</a>
+    <a href="blog.html" data-tr="Blog" data-en="Blog">Blog</a>
+    <a href="hakkinda.html" data-tr="Hakkında" data-en="About">Hakkında</a>
+    <a href="gizlilik.html" data-tr="Gizlilik" data-en="Privacy">Gizlilik</a>
+    <div class="langs"><button id="lTR" class="active" onclick="setL('tr')">TR</button><button id="lEN" onclick="setL('en')">EN</button></div>
+  </nav>
 </div></header>
 <main>
+<div id="content-tr">
 <h1>Gizlilik ve Çerez Politikası</h1>
 <p class="sub">Son güncelleme: Temmuz 2026</p>
-
 <p>Bu sayfa, FilmArşivi ("site") ziyaretçilerinin hangi verilerinin, ne amaçla ve nasıl işlendiğini açıklar. FilmArşivi kişisel hobi amaçlı bir film-dizi keşif sitesidir; üyelik sistemi yoktur ve sizden ad, e-posta, telefon gibi kişisel bilgiler talep edilmez.</p>
-
 <h2>Toplanan ve saklanan veriler</h2>
 <h3>Cihazınızda saklananlar (localStorage)</h3>
 <p>Site, tercihlerinizi yalnızca kendi cihazınızın tarayıcısında saklar; bu veriler bize veya üçüncü kişilere gönderilmez:</p>
 <ul>
-<li><strong>Tema tercihi</strong> (açık/koyu görünüm)</li>
+<li><strong>Tema tercihi</strong> (açık/koyu görünüm) ve dil tercihi</li>
 <li><strong>Listem</strong> içeriği (kaydettiğiniz film ve diziler)</li>
 <li>Açılış animasyonunun bu oturumda gösterilip gösterilmediği bilgisi</li>
 </ul>
 <p>Bu verileri tarayıcınızın site verilerini temizleme özelliğiyle istediğiniz an silebilirsiniz.</p>
-
 <h3>Üçüncü taraf hizmetler</h3>
 <ul>
 <li><strong>TMDB (The Movie Database):</strong> Film ve dizi bilgileri, görseller ve fragman verileri TMDB API'sinden alınır. Bu istekler bir Cloudflare Workers köprüsü üzerinden iletilir; istek sırasında IP adresiniz bu hizmetler tarafından teknik zorunluluk gereği işlenebilir. Bu site TMDB tarafından onaylanmamış veya sertifikalandırılmamıştır.</li>
@@ -70,18 +75,65 @@
 <li><strong>Google Fonts:</strong> Yazı tipi Google Fonts üzerinden yüklenir.</li>
 <li><strong>GitHub Pages:</strong> Site GitHub Pages altyapısında barındırılır; GitHub sunucu günlükleri tutabilir.</li>
 </ul>
-
-<h2 id="cerez">Çerezler ve reklamlar</h2>
+<h2 id="cerez" class="cerez-h">Çerezler ve reklamlar</h2>
 <p>Sitenin kendisi takip çerezi kullanmaz. İleride Google AdSense reklamları gösterilmesi planlanmaktadır; reklamlar aktif olduğunda Google ve iş ortakları, ilgi alanına dayalı reklam sunmak için çerez kullanabilir. Bu durumda Avrupa Ekonomik Alanı ve Birleşik Krallık ziyaretçilerine Google'ın onaylı rıza yönetim platformu (CMP) üzerinden izin ekranı gösterilecek ve bu politika güncellenecektir. Kişiselleştirilmiş reklam tercihlerinizi <a href="https://adssettings.google.com" rel="noopener" target="_blank">Google Reklam Ayarları</a>'ndan yönetebilirsiniz.</p>
-
 <h2>KVKK kapsamında haklarınız</h2>
 <p>6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında; verilerinizin işlenip işlenmediğini öğrenme, işlenmişse bilgi talep etme, düzeltilmesini veya silinmesini isteme haklarına sahipsiniz. Site tarafımızca kişisel veri saklanmadığından bu talepler çoğunlukla cihazınızdaki verileri silmenizle karşılanır; yine de her türlü soru için <a href="hakkinda.html">iletişim sayfasından</a> bize ulaşabilirsiniz.</p>
-
 <h2>Değişiklikler</h2>
 <p>Bu politika gerektiğinde güncellenebilir; güncel sürüm her zaman bu sayfada yayımlanır.</p>
+</div>
+<div id="content-en" style="display:none">
+<h1>Privacy and Cookie Policy</h1>
+<p class="sub">Last updated: July 2026</p>
+<p>This page explains what data of FilmArşivi ("the site") visitors is processed, why and how. FilmArşivi is a personal hobby project for movie and TV discovery; there is no membership system and we never ask for personal information such as your name, e-mail or phone number.</p>
+<h2>Data collected and stored</h2>
+<h3>Stored on your device (localStorage)</h3>
+<p>The site keeps your preferences only in your own browser; this data is never sent to us or to third parties:</p>
+<ul>
+<li><strong>Theme preference</strong> (light/dark) and language preference</li>
+<li><strong>My List</strong> content (the movies and shows you save)</li>
+<li>Whether the opening animation has been shown in this session</li>
+</ul>
+<p>You can delete this data at any time using your browser's site-data clearing feature.</p>
+<h3>Third-party services</h3>
+<ul>
+<li><strong>TMDB (The Movie Database):</strong> Movie and TV information, images and trailer data come from the TMDB API. These requests are relayed through a Cloudflare Workers proxy; your IP address may be processed by these services as a technical necessity. This site is not endorsed or certified by TMDB.</li>
+<li><strong>YouTube:</strong> Trailers are shown with the YouTube player. When you play a trailer, YouTube (Google) applies its own cookie and privacy policies.</li>
+<li><strong>Google Fonts:</strong> The typeface is loaded via Google Fonts.</li>
+<li><strong>GitHub Pages:</strong> The site is hosted on GitHub Pages; GitHub may keep server logs.</li>
+</ul>
+<h2 class="cerez-h">Cookies and advertising</h2>
+<p>The site itself uses no tracking cookies. Google AdSense ads are planned for the future; once ads are active, Google and its partners may use cookies to serve interest-based advertising. In that case, visitors from the European Economic Area and the United Kingdom will be shown a consent screen through Google's certified consent management platform (CMP), and this policy will be updated. You can manage personalized ad preferences at <a href="https://adssettings.google.com" rel="noopener" target="_blank">Google Ads Settings</a>.</p>
+<h2>Your rights under Turkish data protection law (KVKK)</h2>
+<p>Under Law No. 6698 on the Protection of Personal Data, you have the right to learn whether your data is processed, request information, and ask for correction or deletion. Since the site stores no personal data on our side, these requests are usually fulfilled by clearing the data on your own device; for any question, you can still reach us via the <a href="hakkinda.html">contact page</a>.</p>
+<h2>Changes</h2>
+<p>This policy may be updated when necessary; the current version is always published on this page.</p>
+</div>
 </main>
 <footer>© 2026 FilmArşivi ·
-  <a href="index.html">Ana Sayfa</a><a href="blog.html">Blog</a><a href="hakkinda.html">Hakkında &amp; İletişim</a><a href="gizlilik.html">Gizlilik Politikası</a>
+  <a href="index.html" data-tr="Ana Sayfa" data-en="Home">Ana Sayfa</a><a href="blog.html">Blog</a><a href="hakkinda.html" data-tr="Hakkında &amp; İletişim" data-en="About &amp; Contact">Hakkında &amp; İletişim</a><a href="gizlilik.html" data-tr="Gizlilik Politikası" data-en="Privacy Policy">Gizlilik Politikası</a>
 </footer>
+<script>
+function setL(l){
+  document.getElementById('content-tr').style.display = l==='tr' ? '' : 'none';
+  document.getElementById('content-en').style.display = l==='en' ? '' : 'none';
+  document.getElementById('lTR').classList.toggle('active', l==='tr');
+  document.getElementById('lEN').classList.toggle('active', l==='en');
+  document.querySelectorAll('[data-tr]').forEach(a => { a.innerHTML = l==='tr' ? a.dataset.tr : a.dataset.en; });
+  document.documentElement.lang = l;
+  try{ localStorage.setItem('dizifyBlogLang', l); }catch(e){}
+}
+try{
+  if(localStorage.getItem('dizifyBlogLang') === 'en') setL('en');
+}catch(e){}
+
+if(location.hash === '#cerez'){
+  setTimeout(function(){
+    var cur = document.getElementById('content-en').style.display === 'none' ? 'tr' : 'en';
+    var h = document.querySelector('#content-' + cur + ' .cerez-h');
+    if(h) h.scrollIntoView({behavior:'smooth'});
+  }, 100);
+}
+</script>
 </body>
 </html>
