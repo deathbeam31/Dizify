@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="FilmArşivi nedir, neler sunar ve bize nasıl ulaşırsınız.">
+<meta name="description" content="FilmArşivi nedir, neler sunar, nasıl ulaşırsınız. What FilmArşivi is and how to reach us.">
 <meta name="theme-color" content="#0E0E10">
 <title>Hakkında & İletişim — FilmArşivi</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
@@ -15,9 +15,13 @@
     border-bottom:1px solid rgba(255,255,255,.07);z-index:10}
   .bar{max-width:860px;margin:0 auto;padding:.7rem 1.2rem;display:flex;align-items:center;gap:.6rem}
   .brand{display:flex;align-items:center;gap:.5rem;font-weight:800;font-size:1.05rem;color:var(--text);text-decoration:none}
-  .bar nav{margin-left:auto;display:flex;gap:1.1rem}
+  .bar nav{margin-left:auto;display:flex;gap:1.1rem;align-items:center}
   .bar nav a{color:var(--muted);text-decoration:none;font-size:.88rem;font-weight:600}
   .bar nav a:hover{color:var(--text)}
+  .langs{display:flex;gap:.15rem;border:1px solid rgba(255,255,255,.15);border-radius:999px;padding:.15rem}
+  .langs button{background:none;border:none;color:var(--muted);font-family:inherit;font-weight:700;
+    font-size:.75rem;padding:.25rem .6rem;border-radius:999px;cursor:pointer}
+  .langs button.active{background:var(--red);color:#fff}
   main{max-width:860px;margin:0 auto;padding:2.4rem 1.2rem 4rem}
   h1{font-size:1.7rem;font-weight:800;margin-bottom:.4rem}
   .sub{color:var(--muted);font-size:.88rem;margin-bottom:2rem}
@@ -28,11 +32,8 @@
   li{margin:.35rem 0}
   a{color:#FF4B54}
   .card{background:var(--panel);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:1.4rem 1.5rem;margin:1.2rem 0}
-  .tag{display:inline-block;background:rgba(229,9,20,.15);color:#FF6B72;font-size:.72rem;font-weight:700;
-    padding:.2rem .6rem;border-radius:999px;margin-bottom:.5rem}
   footer{border-top:1px solid rgba(255,255,255,.07);padding:1.6rem 1.2rem;text-align:center;color:var(--muted);font-size:.8rem}
   footer a{color:var(--muted);margin:0 .5rem}
-  .note{background:rgba(229,9,20,.08);border:1px solid rgba(229,9,20,.25);border-radius:10px;padding:.8rem 1rem;font-size:.85rem;color:#E8B4B7}
 </style>
 </head>
 <body>
@@ -45,26 +46,30 @@
 <rect x="74" y="92" width="62" height="26" fill="url(#fr)"/>
 <rect x="74" y="40" width="8" height="26" fill="#B5070F"/>
 <rect x="74" y="92" width="8" height="26" fill="#B5070F"/></svg> FilmArşivi</a>
-  <nav><a href="index.html">Ana Sayfa</a><a href="blog.html">Blog</a><a href="hakkinda.html">Hakkında</a><a href="gizlilik.html">Gizlilik</a></nav>
+  <nav>
+    <a href="index.html" data-tr="Ana Sayfa" data-en="Home">Ana Sayfa</a>
+    <a href="blog.html" data-tr="Blog" data-en="Blog">Blog</a>
+    <a href="hakkinda.html" data-tr="Hakkında" data-en="About">Hakkında</a>
+    <a href="gizlilik.html" data-tr="Gizlilik" data-en="Privacy">Gizlilik</a>
+    <div class="langs"><button id="lTR" class="active" onclick="setL('tr')">TR</button><button id="lEN" onclick="setL('en')">EN</button></div>
+  </nav>
 </div></header>
 <main>
+<div id="content-tr">
 <h1>Hakkında &amp; İletişim</h1>
 <p class="sub">FilmArşivi'nin hikayesi ve bize ulaşma yolları</p>
-
 <p>FilmArşivi, "bu akşam ne izlesem?" sorusuna hızlı ve keyifli bir cevap vermek için kurulmuş bağımsız bir film-dizi keşif sitesidir. Vizyondaki filmlerden trend dizilere, fragmanlardan hangi platformda izleyebileceğiniz bilgisine kadar her şeyi tek sayfada toplar.</p>
-
 <h2>Neler sunuyoruz?</h2>
 <ul>
 <li><strong>Güncel listeler:</strong> Trendler, vizyondakiler, yakında çıkacaklar ve yayını süren diziler — veriler her ziyaretinizde canlı olarak güncellenir.</li>
+<li><strong>Ne İzlesem makinesi:</strong> Modunuzu seçin, size özel yüksek puanlı bir öneri gelsin.</li>
 <li><strong>Fragman önizleme:</strong> Kartların üzerine gelerek saniyeler içinde fragman izleyin.</li>
 <li><strong>Listem:</strong> Beğendiklerinizi tek tıkla kaydedin; üyelik gerekmez, listeniz cihazınızda saklanır.</li>
 <li><strong>Nerede izlenir:</strong> Her yapımın Türkiye'de hangi platformda yayında olduğunu görün.</li>
 <li><strong>Türkçe ve İngilizce</strong> arayüz, açık ve koyu tema.</li>
 </ul>
-
 <h2>Veri kaynağı</h2>
 <p>Film ve dizi verileri <a href="https://www.themoviedb.org" target="_blank" rel="noopener">The Movie Database (TMDB)</a> topluluğundan alınmaktadır; bu site TMDB tarafından onaylanmamış veya sertifikalandırılmamıştır. İzleme platformu bilgileri JustWatch kaynaklıdır.</p>
-
 <h2>İletişim</h2>
 <div class="card">
 <p>Soru, öneri, hata bildirimi veya içerik talepleri için:</p>
@@ -73,9 +78,49 @@
 <li>GitHub: <a href="https://github.com/deathbeam31" target="_blank" rel="noopener">github.com/deathbeam31</a></li>
 </ul>
 </div>
+</div>
+<div id="content-en" style="display:none">
+<h1>About &amp; Contact</h1>
+<p class="sub">The story of FilmArşivi and how to reach us</p>
+<p>FilmArşivi is an independent movie and TV discovery site built to give a fast, enjoyable answer to one question: "what should I watch tonight?" From films currently in theaters to trending shows, from trailers to where you can stream each title, everything lives on a single page.</p>
+<h2>What we offer</h2>
+<ul>
+<li><strong>Always-current lists:</strong> Trending titles, in-theater releases, upcoming premieres and currently airing shows — data refreshes live on every visit.</li>
+<li><strong>The "What Should I Watch?" machine:</strong> Pick your mood and get a highly-rated suggestion tailored to it.</li>
+<li><strong>Trailer previews:</strong> Hover over any card and watch the trailer within seconds.</li>
+<li><strong>My List:</strong> Save your favorites with one click; no account needed, your list stays on your device.</li>
+<li><strong>Where to watch:</strong> See which streaming platform carries each title in Türkiye.</li>
+<li><strong>Turkish and English</strong> interface, light and dark themes.</li>
+</ul>
+<h2>Data source</h2>
+<p>Movie and TV data comes from the <a href="https://www.themoviedb.org" target="_blank" rel="noopener">The Movie Database (TMDB)</a> community; this site is not endorsed or certified by TMDB. Streaming availability data is provided by JustWatch.</p>
+<h2>Contact</h2>
+<div class="card">
+<p>For questions, suggestions, bug reports or content requests:</p>
+<ul>
+<li>E-mail: <a href="mailto:bsbr.oyunda@gmail.com">bsbr.oyunda@gmail.com</a></li>
+<li>GitHub: <a href="https://github.com/deathbeam31" target="_blank" rel="noopener">github.com/deathbeam31</a></li>
+</ul>
+</div>
+</div>
 </main>
 <footer>© 2026 FilmArşivi ·
-  <a href="index.html">Ana Sayfa</a><a href="blog.html">Blog</a><a href="hakkinda.html">Hakkında &amp; İletişim</a><a href="gizlilik.html">Gizlilik Politikası</a>
+  <a href="index.html" data-tr="Ana Sayfa" data-en="Home">Ana Sayfa</a><a href="blog.html">Blog</a><a href="hakkinda.html" data-tr="Hakkında &amp; İletişim" data-en="About &amp; Contact">Hakkında &amp; İletişim</a><a href="gizlilik.html" data-tr="Gizlilik Politikası" data-en="Privacy Policy">Gizlilik Politikası</a>
 </footer>
+<script>
+function setL(l){
+  document.getElementById('content-tr').style.display = l==='tr' ? '' : 'none';
+  document.getElementById('content-en').style.display = l==='en' ? '' : 'none';
+  document.getElementById('lTR').classList.toggle('active', l==='tr');
+  document.getElementById('lEN').classList.toggle('active', l==='en');
+  document.querySelectorAll('[data-tr]').forEach(a => { a.innerHTML = l==='tr' ? a.dataset.tr : a.dataset.en; });
+  document.documentElement.lang = l;
+  try{ localStorage.setItem('dizifyBlogLang', l); }catch(e){}
+}
+try{
+  if(localStorage.getItem('dizifyBlogLang') === 'en') setL('en');
+}catch(e){}
+
+</script>
 </body>
 </html>
