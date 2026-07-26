@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://deathbeam31.github.io/Dizify/sitemap.xml
