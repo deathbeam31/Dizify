@@ -353,6 +353,11 @@
   .mood-go{padding:.6rem 1.6rem; font-size:.9rem}
   .mood-go.spin{opacity:.6; pointer-events:none}
   .mood-result{margin-top:1.2rem}
+  .mood.plat{padding-top:.2rem; margin-top:-.6rem}
+  .chip .pdot{width:9px; height:9px; border-radius:50%; display:inline-block; margin-right:.4rem; vertical-align:1px}
+  .hc-prov{display:flex; align-items:center; gap:.35rem; margin:0 0 .55rem}
+  .hc-prov img{width:22px; height:22px; border-radius:6px; border:1px solid rgba(255,255,255,.15)}
+  .hc-prov .more{font-size:.7rem; color:var(--muted); font-weight:700}
   .mood-card{
     display:flex; gap:1.2rem; background:var(--panel);
     border:1px solid rgba(255,255,255,.09); border-radius:16px; overflow:hidden;
@@ -511,6 +516,52 @@
     color:var(--muted); font-size:.8rem; text-decoration:none;
   }
   .yt-link:hover{color:var(--amber); text-decoration:underline}
+  /* --- KARTLARDA PLATFORM ROZETİ (JustWatch tarzı, bizim kimlikle) --- */
+  .prov-badge{
+    position:absolute; left:.5rem; bottom:3.4rem; z-index:2;
+    display:flex; gap:.25rem; align-items:center;
+  }
+  .prov-badge img{
+    width:26px; height:26px; border-radius:7px;
+    border:1.5px solid rgba(255,255,255,.55);
+    box-shadow:0 2px 8px rgba(0,0,0,.5);
+  }
+  .prov-badge .more{
+    width:26px; height:26px; border-radius:7px;
+    background:rgba(12,12,15,.85); color:#fff;
+    font-size:.62rem; font-weight:800;
+    display:flex; align-items:center; justify-content:center;
+    border:1.5px solid rgba(255,255,255,.35);
+  }
+  /* --- GERİ SAYIM ETİKETİ (Yakında kartları) --- */
+  .soon-badge{
+    position:absolute; top:.5rem; left:.5rem; z-index:2;
+    background:linear-gradient(120deg, #E50914, #B00710);
+    color:#fff; font-size:.66rem; font-weight:800;
+    padding:.28rem .6rem; border-radius:999px;
+    box-shadow:0 2px 10px rgba(229,9,20,.4);
+  }
+  .soon-badge.today{background:linear-gradient(120deg, #16A34A, #15803D)}
+  /* --- DETAYDA ZENGİN İZLEME BÖLÜMÜ --- */
+  .release-line{
+    display:inline-flex; align-items:center; gap:.45rem;
+    background:rgba(229,9,20,.12); border:1px solid rgba(229,9,20,.3);
+    color:#FF6B72; font-size:.8rem; font-weight:700;
+    padding:.4rem .8rem; border-radius:999px; margin:.4rem 0 .2rem;
+  }
+  .prov-groups{display:flex; flex-direction:column; gap:.9rem}
+  .prov-group h4{font-size:.78rem; font-weight:700; color:var(--muted); margin-bottom:.45rem;
+    text-transform:uppercase; letter-spacing:.06em}
+  .prov-items{display:flex; gap:.5rem; flex-wrap:wrap}
+  .prov-item{
+    display:flex; align-items:center; gap:.5rem;
+    background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1);
+    border-radius:11px; padding:.4rem .75rem .4rem .45rem;
+    font-size:.8rem; font-weight:600;
+  }
+  .prov-item img{width:30px; height:30px; border-radius:8px}
+  body.light .prov-item{background:rgba(0,0,0,.04); border-color:rgba(0,0,0,.12)}
+  body.light .prov-badge img{border-color:rgba(255,255,255,.85)}
   .providers{margin-top:1.3rem}
   .providers h3{font-size:.92rem; font-weight:700; margin-bottom:.6rem; color:var(--hot)}
   .providers .logos{display:flex; gap:.6rem; flex-wrap:wrap}
@@ -752,6 +803,12 @@
         </div>
         <div class="mood-result" id="moodResult"></div>
       </section>
+      <!-- Platforma göre keşif -->
+      <section class="mood plat" id="platSection">
+        <h2 id="platTitle">📺 Platformda Ne Var?</h2>
+        <p class="mood-sub" id="platSub">Platformunu seç, Türkiye'de izleyebileceklerini gör.</p>
+        <div class="mood-chips" id="platChips"></div>
+      </section>
       <!-- Sıralar JS ile doldurulur -->
     </main>
 
@@ -837,8 +894,11 @@ const UI = {
     noOverview:'Özet bulunamadı.', detailFail:'Detaylar yüklenemedi.',
     watchOnYt:"Oynatıcı açılmazsa YouTube'da izle ↗",
     navList:'Listem', navBlog:'Blog',
+    platTitle:'📺 Platformda Ne Var?', platSub:'Platformunu seç, Türkiye\'de izleyebileceklerini gör.', platGridTitle:'Türkiye\'de Öne Çıkanlar',
     moodTitle:'🎯 Ne İzlesem?', moodSub:'Modunu seç, gerisini bize bırak — sana özel bir öneri bulalım.',
     moodGo:'Öner', moodAgain:'Başka Öner', moodNone:'Bu kombinasyonda öneri bulunamadı — modu veya dönemi değiştirip tekrar dene.',
+    subInc:'Abonelikle', rentBuy:'Kirala / Satın Al', freeW:'Ücretsiz',
+    inDays:'gün sonra', releaseToday:'🎬 Bugün vizyonda!', releasedOn:'Çıkış',
     eraAny:'Dönem Fark Etmez', era2020:'2020 ve sonrası', era2010:"2010'lar", era2000:"2000'ler", era90:"90'lar", myListTitle:'Listem', emptyList:'Listen henüz boş — kartlardaki ＋ düğmesiyle film ve dizi ekleyebilirsin.', addList:'＋ Listeme Ekle', inListTxt:'✓ Listemde',
     fBlog:'Blog', fAbout:'Hakkında', fContact:'İletişim', fPrivacy:'Gizlilik Politikası', fCookie:'Çerez Politikası',
     replay:'↻ Açılış animasyonunu oynat',
@@ -858,8 +918,11 @@ const UI = {
     noOverview:'No overview available.', detailFail:'Could not load details.',
     watchOnYt:"If the player doesn't load, watch on YouTube ↗",
     navList:'My List', navBlog:'Blog',
+    platTitle:'📺 What\'s on the Platform?', platSub:'Pick a platform, see what you can stream in Türkiye.', platGridTitle:'Highlights in Türkiye',
     moodTitle:'🎯 What Should I Watch?', moodSub:'Pick your mood, leave the rest to us — we will find you a match.',
     moodGo:'Suggest', moodAgain:'Try Another', moodNone:'No match for this combo — change the mood or era and try again.',
+    subInc:'Streaming', rentBuy:'Rent / Buy', freeW:'Free',
+    inDays:'days to go', releaseToday:'🎬 In theaters today!', releasedOn:'Release',
     eraAny:'Any Era', era2020:'2020s', era2010:'2010s', era2000:'2000s', era90:'90s', myListTitle:'My List', emptyList:'Your list is empty — add movies and shows with the ＋ button on cards.', addList:'＋ Add to My List', inListTxt:'✓ In My List',
     fBlog:'Blog', fAbout:'About', fContact:'Contact', fPrivacy:'Privacy Policy', fCookie:'Cookie Policy',
     replay:'↻ Play opening animation',
@@ -873,6 +936,7 @@ function applyUI(){
   const set = (id, key) => { const el = document.getElementById(id); if(el) el.textContent = t(key); };
   set('navHome','navHome'); set('navMovies','navMovies'); set('navSeries','navSeries'); set('navCats','navCats'); set('navList','navList'); set('navBlog','navBlog');
   renderMood();
+  renderPlats();
   set('backBtn','back'); set('replayBtn','replay'); set('copyText','copy');
   set('fBlog','fBlog'); set('fAbout','fAbout'); set('fContact','fContact'); set('fPrivacy','fPrivacy'); set('fCookie','fCookie');
   document.getElementById('searchInput').placeholder = t('searchPh');
@@ -977,9 +1041,22 @@ function cardHTML(item, forcedType){
   const poster = item.poster_path
     ? `<img loading="lazy" src="${IMG}/w342${item.poster_path}" alt="${title}">`
     : `<div class="noposter">${title}</div>`;
+  // Yakında etiketi: gelecek tarihli yapımlar için geri sayım
+  const relDate = item.release_date || item.first_air_date || '';
+  let soonBadge = '';
+  if(relDate){
+    const diff = Math.ceil((new Date(relDate) - new Date().setHours(0,0,0,0)) / 86400000);
+    if(diff > 0 && diff <= 365){
+      soonBadge = `<span class="soon-badge">📅 ${diff} ${t('inDays')}</span>`;
+    } else if(diff === 0){
+      soonBadge = `<span class="soon-badge today">${t('releaseToday')}</span>`;
+    }
+  }
   return `
     <div class="card" data-type="${type}" data-id="${item.id}" onclick="openDetail(${item.id}, '${type}')">
+      ${soonBadge}
       <span class="score">★ ${rating}</span>
+      <span class="prov-badge" data-pv="${type}-${item.id}"></span>
       <button class="add-btn${saved ? ' in' : ''}" data-key="${key}"
         onclick="event.stopPropagation(); toggleList('${type}', ${item.id}, this)"
         aria-label="Listem">${saved ? '✓' : '＋'}</button>
@@ -1091,6 +1168,128 @@ async function suggest(){
   }
 }
 
+/* ============ PLATFORM ROZETLERİ (tembel yükleme) ============ */
+const provCache = new Map();   // "movie-123" → {flatrate:[...], rent:[...]}
+let provQueue = [];
+let provBusy = false;
+
+async function getProviders(type, id){
+  const k = type + '-' + id;
+  if(provCache.has(k)) return provCache.get(k);
+  try{
+    const d = await tmdb(`/${type}/${id}/watch/providers`, {});
+    const tr = (d.results && d.results.TR) || {};
+    const out = {
+      flatrate: tr.flatrate || [],
+      rent: tr.rent || [], buy: tr.buy || [], free: tr.free || []
+    };
+    provCache.set(k, out);
+    return out;
+  }catch(e){ return {flatrate:[],rent:[],buy:[],free:[]}; }
+}
+
+function fillBadge(el, prov){
+  const plats = prov.flatrate.slice(0, 2);
+  if(!plats.length){ el.remove(); return; }
+  const extra = prov.flatrate.length - plats.length;
+  el.innerHTML = plats.map(pp =>
+    `<img src="${IMG}/w45${pp.logo_path}" alt="${escHTML(pp.provider_name)}" title="${escHTML(pp.provider_name)}">`
+  ).join('') + (extra > 0 ? `<span class="more">+${extra}</span>` : '');
+}
+
+async function pumpProvQueue(){
+  if(provBusy) return;
+  provBusy = true;
+  while(provQueue.length){
+    const el = provQueue.shift();
+    if(!el.isConnected) continue;
+    const [type, id] = el.dataset.pv.split('-');
+    const prov = await getProviders(type, +id);
+    if(el.isConnected) fillBadge(el, prov);
+    await new Promise(r => setTimeout(r, 120));   // TMDB'yi yormadan sırayla
+  }
+  provBusy = false;
+}
+
+// Görünür kartların rozetlerini kuyruğa al
+const provObserver = ('IntersectionObserver' in window)
+  ? new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if(en.isIntersecting && !en.target.dataset.done){
+          en.target.dataset.done = '1';
+          provQueue.push(en.target);
+          provObserver.unobserve(en.target);
+        }
+      });
+      pumpProvQueue();
+    }, {rootMargin:'120px'})
+  : null;
+
+function watchBadges(root){
+  if(!provObserver) return;
+  (root || document).querySelectorAll('.prov-badge:not([data-done])').forEach(el =>
+    provObserver.observe(el));
+}
+
+/* ================= PLATFORMA GÖRE KEŞİF ================= */
+const PLATFORMS = [
+  { id:8,   name:'Netflix',     c:'#E50914' },
+  { id:119, name:'Prime Video', c:'#00A8E1' },
+  { id:337, name:'Disney+',     c:'#4B62D8' },
+  { id:350, name:'Apple TV+',   c:'#C9CDD4' },
+  { id:11,  name:'MUBI',        c:'#28B8AC' },
+];
+
+function renderPlats(){
+  const box = document.getElementById('platChips');
+  if(!box) return;
+  box.innerHTML = PLATFORMS.map(pl =>
+    `<button class="chip" onclick="showPlatform(${pl.id}, '${pl.name.replace(/'/g,"\\'")}')">` +
+    `<span class="pdot" style="background:${pl.c}"></span>${pl.name}</button>`
+  ).join('');
+  const pt = document.getElementById('platTitle');
+  const ps = document.getElementById('platSub');
+  if(pt) pt.textContent = t('platTitle');
+  if(ps) ps.textContent = t('platSub');
+}
+
+async function showPlatform(pid, pname){
+  document.getElementById('homeSection').style.display = 'none';
+  document.getElementById('hero').style.display = 'none';
+  stopHeroTimer();
+  document.querySelector('.ad-strip').style.display = 'none';
+  const gs = document.getElementById('gridSection');
+  gs.style.display = 'block';
+  document.getElementById('gridTitle').textContent = `${pname} · ${t('platGridTitle')}`;
+  const grid = document.getElementById('gridItems');
+  const status = document.getElementById('gridStatus');
+  grid.innerHTML = ''; status.innerHTML = '<div class="loader"></div>';
+  window.scrollTo({top:0});
+  try{
+    const base = { watch_region:'TR', with_watch_providers:String(pid),
+                   sort_by:'popularity.desc', 'vote_count.gte':50 };
+    const [m1, t1, m2] = await Promise.all([
+      tmdb('/discover/movie', {...base, page:1}),
+      tmdb('/discover/tv',    {...base, page:1}),
+      tmdb('/discover/movie', {...base, page:2}),
+    ]);
+    const movies = [...(m1.results||[]), ...(m2.results||[])].map(x => ({...x, media_type:'movie'}));
+    const tvs = (t1.results||[]).map(x => ({...x, media_type:'tv'}));
+    // Popülerliğe göre harmanla
+    const all = [...movies, ...tvs].sort((a,b) => (b.popularity||0) - (a.popularity||0)).slice(0, 48);
+    if(!all.length){
+      status.innerHTML = `<div class="status">${t('noResults')}</div>`;
+      return;
+    }
+    grid.innerHTML = all.map(item => cardHTML(item, item.media_type)).join('');
+    status.innerHTML = '';
+    watchBadges();
+  }catch(err){
+    status.innerHTML = `<div class="status error">${t('loadFail')}</div>`;
+    console.error(err);
+  }
+}
+
 /* ================= LİSTEM ================= */
 function getList(){
   try{ return JSON.parse(localStorage.getItem('dizifyList') || '[]'); }catch(e){ return []; }
@@ -1153,6 +1352,7 @@ function renderMyList(){
     status.innerHTML = `<div class="status">${t('emptyList')}</div>`;
   }else{
     grid.innerHTML = list.map(item => cardHTML(item, item.media_type)).join('');
+    watchBadges(grid);
     status.innerHTML = '';
   }
 }
@@ -1262,6 +1462,7 @@ async function loadRows(){
       const data = await tmdb(r.path, r.params);
       document.getElementById('items-' + r.id).innerHTML =
         data.results.slice(0, 15).map(item => cardHTML(item, r.type)).join('');
+      watchBadges(document.getElementById('items-' + r.id));
     }catch(err){
       document.getElementById('items-' + r.id).innerHTML =
         `<div class="status error">${t('loadFail')}</div>`;
@@ -1291,6 +1492,7 @@ async function showAll(rowId){
     ]);
     const items = [...p1.results, ...p2.results];
     grid.innerHTML = items.map(item => cardHTML(item, r.type)).join('');
+    watchBadges(grid);
     status.innerHTML = '';
   }catch(err){
     status.innerHTML = `<div class="status error">${t('loadFail')}</div>`;
@@ -1350,6 +1552,7 @@ async function doSearch(q){
       status.innerHTML = `<div class="status">${t('noResults')}</div>`;
     }else{
       grid.innerHTML = items.map(item => cardHTML(item)).join('');
+      watchBadges(grid);
       status.innerHTML = '';
     }
   }catch(err){
@@ -1421,11 +1624,27 @@ async function openDetail(id, type, autoTrailer = false){
     const prov = data['watch/providers'] && data['watch/providers'].results
       ? data['watch/providers'].results.TR : null;
     const flatrate = prov && prov.flatrate ? prov.flatrate : [];
-    const provHTML = flatrate.length
-      ? flatrate.map(p =>
-          `<img src="${IMG}/w92${p.logo_path}" alt="${escHTML(p.provider_name)}" title="${escHTML(p.provider_name)}">`
-        ).join('')
-      : `<span class="none">${t('noProvider')}</span>`;
+    const rentbuy = [...(prov && prov.rent || []), ...(prov && prov.buy || [])]
+      .filter((p, i, a) => a.findIndex(x => x.provider_id === p.provider_id) === i);
+    const freew = prov && prov.free ? prov.free : [];
+    const pvItem = p => `<span class="prov-item"><img src="${IMG}/w92${p.logo_path}" alt="">${escHTML(p.provider_name)}</span>`;
+    let provHTML = '';
+    if(flatrate.length) provHTML += `<div class="prov-group"><h4>📺 ${t('subInc')}</h4><div class="prov-items">${flatrate.map(pvItem).join('')}</div></div>`;
+    if(freew.length)    provHTML += `<div class="prov-group"><h4>🆓 ${t('freeW')}</h4><div class="prov-items">${freew.map(pvItem).join('')}</div></div>`;
+    if(rentbuy.length)  provHTML += `<div class="prov-group"><h4>💳 ${t('rentBuy')}</h4><div class="prov-items">${rentbuy.map(pvItem).join('')}</div></div>`;
+    if(!provHTML) provHTML = `<span class="none">${t('noProvider')}</span>`;
+    provHTML = `<div class="prov-groups">${provHTML}</div>`;
+
+    // Çıkış tarihi satırı: gelecekteyse geri sayım
+    const relRaw = data.release_date || data.first_air_date || '';
+    let releaseLine = '';
+    if(relRaw){
+      const diff = Math.ceil((new Date(relRaw) - new Date().setHours(0,0,0,0)) / 86400000);
+      const nice = new Date(relRaw).toLocaleDateString(L() === 'tr' ? 'tr-TR' : 'en-US',
+        {day:'numeric', month:'long', year:'numeric'});
+      if(diff > 0) releaseLine = `<div class="release-line">📅 ${t('releasedOn')}: ${nice} · ${diff} ${t('inDays')}</div>`;
+      else if(diff === 0) releaseLine = `<div class="release-line">${t('releaseToday')}</div>`;
+    }
 
     const key = type + '-' + id;
     modal.innerHTML = `
@@ -1439,6 +1658,7 @@ async function openDetail(id, type, autoTrailer = false){
           <span class="rating">★ ${rating}</span>
         </div>
         ${genres ? `<div class="sub"><span>${escHTML(genres)}</span></div>` : ''}
+        ${releaseLine}
         <p class="overview">${escHTML(data.overview || '') || t('noOverview')}</p>
         <div class="modal-actions">
           ${trailer ? `<button class="btn-primary" onclick="playTrailer('${esc(trailer.key)}')">${t('playTrailer')}</button>` : ''}
@@ -1451,7 +1671,7 @@ async function openDetail(id, type, autoTrailer = false){
         ` : ''}
         <div class="providers">
           <h3>${t('whereWatch')}</h3>
-          <div class="logos">${provHTML}</div>
+          ${provHTML}
           <div class="jw">${t('jw')}</div>
         </div>
       </div>`;
@@ -1520,6 +1740,7 @@ function openHoverCard(card){
     <div class="hc-body">
       <div class="hc-title">${title}</div>
       <div class="hc-meta"><span class="rating">★ ${rating}</span><span>${year}</span></div>
+      <div class="hc-prov" id="hcProv"></div>
       <div class="hc-actions">
         <button class="hc-btn primary" onclick="openDetail(${id}, '${type}')">${t('watch')}</button>
         <button class="hc-btn add-btn-proxy list-toggle" data-key="${key}"
@@ -1527,6 +1748,19 @@ function openHoverCard(card){
       </div>
     </div>`;
   hoverCard.classList.add('show');
+
+  // Platform rozetlerini doldur (önbellekli)
+  getProviders(type, id).then(prov => {
+    if(hcKey !== key) return;
+    const el = document.getElementById('hcProv');
+    if(!el) return;
+    const plats = prov.flatrate.slice(0, 4);
+    if(!plats.length){ el.remove(); return; }
+    const extra = prov.flatrate.length - plats.length;
+    el.innerHTML = plats.map(pp =>
+      `<img src="${IMG}/w45${pp.logo_path}" alt="${escHTML(pp.provider_name)}" title="${escHTML(pp.provider_name)}">`
+    ).join('') + (extra > 0 ? `<span class="more">+${extra}</span>` : '');
+  }).catch(() => {});
 
   // 1 sn sonra sessiz fragman başlat (hâlâ aynı kartın üzerindeyse)
   hcVideoTimer = setTimeout(async () => {
